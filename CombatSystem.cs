@@ -1,4 +1,5 @@
 ﻿using Combat_System;
+using System.Drawing;
 
 namespace CombatSystem
 {
@@ -292,7 +293,7 @@ namespace CombatSystem
                         atkCount = 0; 
                         healCount = 0;
 
-                        Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT FOXHOLING.
+                        Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
                         Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                         Console.WriteLine(" ");
@@ -344,6 +345,7 @@ namespace CombatSystem
                                         Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
                                         Console.WriteLine(" ");
                                         Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                                        Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
                                         Console.WriteLine(AIPlayer.Name + " HP: " + AIPlayer.HP);
                                         Console.WriteLine(" ");
                                         Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
@@ -375,7 +377,7 @@ namespace CombatSystem
                                     {
                                         if (healCount < 1)
                                         {
-                                            usePotion(Player1.HP, Player1.MaxHP);
+                                            Player1.HP = usePotion(Player1.HP, Player1.MaxHP);
                                             Player1.Pots = Player1.Pots - 1;
                                             Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT!");
                                             Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
@@ -391,7 +393,7 @@ namespace CombatSystem
                                     else
                                     {
                                         Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
-                                        Player1.AP = Player1.AP - healCost;
+                                        Player1.AP = Player1.AP - (healCost / 2);
                                     }
                                 }
                                 else
@@ -448,7 +450,7 @@ namespace CombatSystem
                         while (AIPlayer.AP > defCost)
                         {
                             // DETERMINES AI CHOICE
-                            aiTurn = aiChoice(AIPlayer.HP, AIPlayer.MaxHP, AIPlayer.ATK, AIPlayer.DEF, AIPlayer.MP, AIPlayer.AP, AIPlayer.Pots,
+                            aiTurn = aiChoice(AIPlayer.HP, AIPlayer.MaxHP, AIPlayer.ATK, atkCount, AIPlayer.DEF, AIPlayer.MP, AIPlayer.AP, AIPlayer.Pots, healCount,
                             Player1.HP, Player1.MaxHP, Player1.ATK, Player1.DEF, Player1.MP);
 
                             // IF AI CHOOSES TO ATTACK
@@ -485,12 +487,12 @@ namespace CombatSystem
                                 Console.WriteLine("--- " + AIPlayer.Name + "DEFENSE: " + AIPlayer.DEF);
                                 Console.WriteLine(" ");
                                 AIPlayer.AP = AIPlayer.AP - defCost;
-                                break;
+                                aiTurn = "e";
                             }
                             // IF AI CHOOSES TO HEAL
                             else if (aiTurn == "h")
                             {
-                                usePotion(AIPlayer.HP, AIPlayer.MaxHP);
+                                AIPlayer.HP = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
                                 AIPlayer.Pots = AIPlayer.Pots - 1;
                                 Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                 Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
@@ -513,6 +515,7 @@ namespace CombatSystem
                             Console.WriteLine("----------");
                             Console.WriteLine(" ");
                         }
+                        
                     }
                     Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
                     Console.WriteLine(" ");
@@ -556,7 +559,7 @@ namespace CombatSystem
                         while (AIPlayer.AP > defCost)
                         {
                             // DETERMINES AI CHOICE
-                            aiTurn = aiChoice(AIPlayer.HP, AIPlayer.MaxHP, AIPlayer.ATK, AIPlayer.DEF, AIPlayer.MP, AIPlayer.AP, AIPlayer.Pots,
+                            aiTurn = aiChoice(AIPlayer.HP, AIPlayer.MaxHP, AIPlayer.ATK, atkCount, AIPlayer.DEF, AIPlayer.MP, AIPlayer.AP, AIPlayer.Pots, healCount,
                             Player1.HP, Player1.MaxHP, Player1.ATK, Player1.DEF, Player1.MP);
 
                             // IF AI CHOOSES TO ATTACK
@@ -689,6 +692,7 @@ namespace CombatSystem
                                         Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
                                         Console.WriteLine(" ");
                                         Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                                        Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
                                         Console.WriteLine(AIPlayer.Name + " HP: " + AIPlayer.HP);
                                         Console.WriteLine(" ");
                                         Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
@@ -736,7 +740,7 @@ namespace CombatSystem
                                     else
                                     {
                                         Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
-                                        Player1.AP = Player1.AP - healCost;
+                                        Player1.AP = Player1.AP - (healCost / 2);
                                     }
                                 }
                                 else
@@ -919,7 +923,7 @@ namespace CombatSystem
             }
             
             // AI BEHAVIORAL ALGORITHM STARTS HERE
-            static string aiChoice(int aiHP, int aiMaxHP, int aiATK, int aiDEF, int aiMP, int aiAP, int aiPots,
+            static string aiChoice(int aiHP, int aiMaxHP, int aiATK, int aiATKCount, int aiDEF, int aiMP, int aiAP, int aiPots, int aiHealCount, 
                     int playerHP, int playerMaxHP, int playerATK, int playerDEF, int playerMP)
             {
                 string choice = "UNDEFINED";
@@ -930,11 +934,17 @@ namespace CombatSystem
                     {
                         if (aiHP > playerHP)
                         {
-                            choice = "a";
+                            if (aiATKCount < 1)
+                            {
+                                choice = "a";
+                            }
                         }
                         if (aiPots > 0)
                         {
-                            choice = "h";
+                            if (aiHealCount < 1)
+                            {
+                                choice = "h";
+                            }
                         }
                         if (aiPots < 1)
                         {
@@ -945,19 +955,27 @@ namespace CombatSystem
                     {
                         if (aiPots > 0)
                         {
-                            choice = "p";
+                            if (aiHealCount < 1)
+                            {
+                                choice = "h";
+                            }
                         }
                         else if (aiPots < 1)
                         {
-                            choice = "d";
+                            if (aiATKCount < 1)
+                            {
+                                choice = "a";
+                            }
                         }
-                        else choice = "a";
+                        else choice = "d";
                     }
                     else if (aiHP > (aiMaxHP / 2) && aiHP <= aiMaxHP)
                     {
-                        choice = "a";
+                        if (aiATKCount < 1)
+                        {
+                            choice = "a";
+                        }
                     }
-
                 }
                 else choice = "e";
 
