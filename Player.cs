@@ -19,11 +19,11 @@ namespace Combat_System
         private int atk = 0;
         private double crit = 4.95;
         private int def = 0;
-        private int con = 0;
-        private int str = 0;
-        private int dex = 0;
-        private int intel = 0;
-        private int wis = 0;
+        private int con = 5;
+        private int str = 5;
+        private int dex = 5;
+        private int intel = 5;
+        private int wis = 5;
         private int init = 0;
         private int pots = 2;
         private string name = "UNDEFINED";
