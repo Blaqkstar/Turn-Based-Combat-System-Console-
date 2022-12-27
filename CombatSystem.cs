@@ -29,6 +29,9 @@ namespace CombatSystem
             int origPlayerDef = 0;
             int origAIDef = 0;
 
+            // HOLDS HEALED AMOUNT
+            int healAmount = 0;
+
             // INITIALIZES PLAYER STATS
             int hp = 0;
             int maxHP = 0;
@@ -280,6 +283,8 @@ namespace CombatSystem
 
                     if (Player1.Init > AIPlayer.Init)
                     {
+                        Player1.HP = Player1.MaxHP; // ENSURES THAT PLAYER HP BEGINS AT FULL
+                        AIPlayer.HP = AIPlayer.MaxHP; // ENSURES THAT AI HP BEGINS AT FULL
                         origPlayerDef = Player1.DEF; // HOLDS PLAYER ORIGINAL DEF VALUE
                         origAIDef = AIPlayer.DEF; // HOLDS AI ORIGINAL DEF VALUE
 
@@ -379,9 +384,14 @@ namespace CombatSystem
                                         {
                                             if (healCount < 1)
                                             {
-                                                Player1.HP = usePotion(Player1.HP, Player1.MaxHP);
+                                                healAmount = usePotion(Player1.HP, Player1.MaxHP);
+                                                Player1.HP = Player1.HP + healAmount;
+                                                if (Player1.HP > Player1.MaxHP)
+                                                {
+                                                    Player1.HP = Player1.MaxHP;
+                                                }
                                                 Player1.Pots = Player1.Pots - 1;
-                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT!");
+                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
                                                 Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
                                                 Console.WriteLine(" ");
                                                 Player1.AP = Player1.AP - healCost;
@@ -539,6 +549,8 @@ namespace CombatSystem
 
                     else if (AIPlayer.Init > Player1.Init)
                     {
+                        Player1.HP = Player1.MaxHP; // ENSURES THAT PLAYER HP BEGINS AT FULL
+                        AIPlayer.HP = AIPlayer.MaxHP; // ENSURES THAT AI HP BEGINS AT FULL
                         origPlayerDef = Player1.DEF; // HOLDS PLAYER ORIGINAL DEF VALUE
                         origAIDef = AIPlayer.DEF; // HOLDS AI ORIGINAL DEF VALUE
 
@@ -553,7 +565,7 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT FOXHOLING.
+                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
@@ -572,7 +584,6 @@ namespace CombatSystem
                                     Console.WriteLine(AIPlayer.Name + " ROLLS FOR HIT...");
                                     hitRoll = rollHit();
                                     Console.WriteLine("--- " + AIPlayer.Name + " ROLLED " + hitRoll);
-                                    Console.WriteLine(" ");
 
                                     // IF SUCCESSFUL
                                     if (hitRoll >= Player1.DEF)
@@ -728,9 +739,14 @@ namespace CombatSystem
                                         {
                                             if (healCount < 1)
                                             {
-                                                usePotion(Player1.HP, Player1.MaxHP);
+                                                healAmount = usePotion(Player1.HP, Player1.MaxHP);
+                                                Player1.HP = Player1.HP + healAmount;
+                                                if (Player1.HP > Player1.MaxHP)
+                                                {
+                                                    Player1.HP = Player1.MaxHP;
+                                                }
                                                 Player1.Pots = Player1.Pots - 1;
-                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT!");
+                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
                                                 Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
                                                 Console.WriteLine(" ");
                                                 Player1.AP = Player1.AP - healCost;
@@ -802,12 +818,11 @@ namespace CombatSystem
                     {
                         char.ToLower(c);
                     }
-                    if (choice = "n")
+                    if (choice == "n")
                     {
                         Environment.Exit(0);
                     }
-                }
-                
+                }                
             }
 
             // THERE BE METHODS BELOW THIS LINE!
