@@ -802,6 +802,10 @@ namespace CombatSystem
                     {
                         char.ToLower(c);
                     }
+                    if (choice = "n")
+                    {
+                        Environment.Exit(0);
+                    }
                 }
                 
             }
