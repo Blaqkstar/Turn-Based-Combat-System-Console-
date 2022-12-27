@@ -41,6 +41,7 @@ namespace CombatSystem
             int ap = 0;
             int maxAP = 0;
             int atk = 0;
+            int weaponDmg = 5;
             double crit = 4.95;
             int def = 0;
             int con = 5;
@@ -59,6 +60,7 @@ namespace CombatSystem
             int ai_ap = 0;
             int ai_maxAP = 0;
             int ai_atk = 0;
+            int ai_weaponDmg = 5;
             double ai_crit = 4.95;
             int ai_def = 0;
             int ai_con = 5;
@@ -333,7 +335,7 @@ namespace CombatSystem
                                             // IF SUCCESSFUL
                                             if (hitRoll >= AIPlayer.DEF)
                                             {
-                                                damage = getDamage(Player1.ATK, AIPlayer.DEF);
+                                                damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
                                                 AIPlayer.HP = AIPlayer.HP - damage;
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
                                                 Console.WriteLine(" ");
@@ -449,6 +451,13 @@ namespace CombatSystem
 
                             // -------------------------------- [ AI TURN START ]
 
+                            // CHECKS AI ALIVE STATUS AT THE BEGINNING OF EACH TURN
+                            AIPlayer.Alive = isAlive(AIPlayer.HP);
+                            if (AIPlayer.Alive == false)
+                            {
+                                break;
+                            }
+
                             // RESETS ATK AND HEAL COUNTER AT THE BEGINNING OF EACH TURN
                             atkCount = 0;
                             healCount = 0;
@@ -472,12 +481,11 @@ namespace CombatSystem
                                     Console.WriteLine(AIPlayer.Name + " ROLLS FOR HIT...");
                                     hitRoll = rollHit();
                                     Console.WriteLine("--- " + AIPlayer.Name + " ROLLED " + hitRoll);
-                                    Console.WriteLine(" ");
 
                                     // IF SUCCESSFUL
                                     if (hitRoll >= Player1.DEF)
                                     {
-                                        damage = getDamage(AIPlayer.ATK, Player1.DEF);
+                                        damage = getDamage(AIPlayer.ATK, AIPlayer.WeaponDMG, Player1.DEF);
                                         Player1.HP = Player1.HP - damage;
                                         Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE!");
                                         Console.WriteLine(" ");
@@ -485,6 +493,7 @@ namespace CombatSystem
                                     else
                                     {
                                         Console.WriteLine("--- " + AIPlayer.Name + "'s ATTACK MISSES!");
+                                        Console.WriteLine(" ");
                                     }
                                     // CALCULATES REMAINING AP
                                     AIPlayer.AP = AIPlayer.AP - atkCost;
@@ -496,7 +505,7 @@ namespace CombatSystem
                                     AIPlayer.DEF = AIPlayer.DEF + useDefend(AIPlayer.DEF);
                                     Console.WriteLine("--- " + AIPlayer.Name + " RAISES THEIR SHIELD, PREPARING FOR " + Player1.Name + "'s NEXT ATTACK!");
                                     Console.WriteLine("--- DEFENSE INCREASES BY: " + (AIPlayer.DEF - origAIDef));
-                                    Console.WriteLine("--- " + AIPlayer.Name + "DEFENSE: " + AIPlayer.DEF);
+                                    Console.WriteLine("--- " + AIPlayer.Name + " DEFENSE: " + AIPlayer.DEF);
                                     Console.WriteLine(" ");
                                     AIPlayer.AP = AIPlayer.AP - defCost;
                                     aiTurn = "e";
@@ -505,7 +514,8 @@ namespace CombatSystem
                                 // IF AI CHOOSES TO HEAL
                                 else if (aiTurn == "h")
                                 {
-                                    AIPlayer.HP = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
+                                    healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
+                                    AIPlayer.HP = AIPlayer.HP + healAmount;
                                     AIPlayer.Pots = AIPlayer.Pots - 1;
                                     Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                     Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
@@ -561,6 +571,13 @@ namespace CombatSystem
                         {
                             // -------------------------------- [ AI TURN START ]
 
+                            // CHECKS AI ALIVE STATUS AT THE BEGINNING OF EACH TURN
+                            AIPlayer.Alive = isAlive(AIPlayer.HP);
+                            if (AIPlayer.Alive == false)
+                            {
+                                break;
+                            }
+
                             // RESETS ATK AND HEAL COUNTER AT THE BEGINNING OF EACH TURN
                             atkCount = 0;
                             healCount = 0;
@@ -588,7 +605,7 @@ namespace CombatSystem
                                     // IF SUCCESSFUL
                                     if (hitRoll >= Player1.DEF)
                                     {
-                                        damage = getDamage(AIPlayer.ATK, Player1.DEF);
+                                        damage = getDamage(AIPlayer.ATK, AIPlayer.WeaponDMG, Player1.DEF);
                                         Player1.HP = Player1.HP - damage;
                                         Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE!");
                                         Console.WriteLine(" ");
@@ -607,7 +624,7 @@ namespace CombatSystem
                                     AIPlayer.DEF = AIPlayer.DEF + useDefend(AIPlayer.DEF);
                                     Console.WriteLine("--- " + AIPlayer.Name + " RAISES THEIR SHIELD, PREPARING FOR " + Player1.Name + "'s NEXT ATTACK!");
                                     Console.WriteLine("--- DEFENSE INCREASES BY: " + (AIPlayer.DEF - origAIDef));
-                                    Console.WriteLine("--- " + AIPlayer.Name + "DEFENSE: " + AIPlayer.DEF);
+                                    Console.WriteLine("--- " + AIPlayer.Name + " DEFENSE: " + AIPlayer.DEF);
                                     Console.WriteLine(" ");
                                     AIPlayer.AP = AIPlayer.AP - defCost;
                                     aiTurn = "e";
@@ -616,7 +633,8 @@ namespace CombatSystem
                                 // IF AI CHOOSES TO HEAL
                                 else if (aiTurn == "h")
                                 {
-                                    usePotion(AIPlayer.HP, AIPlayer.MaxHP);
+                                    healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
+                                    AIPlayer.HP = AIPlayer.HP + healAmount;
                                     AIPlayer.Pots = AIPlayer.Pots - 1;
                                     Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                     Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
@@ -655,7 +673,7 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT FOXHOLING.
+                            Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
                             Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
@@ -688,7 +706,7 @@ namespace CombatSystem
                                             // IF SUCCESSFUL
                                             if (hitRoll >= AIPlayer.DEF)
                                             {
-                                                damage = getDamage(Player1.ATK, AIPlayer.DEF);
+                                                damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
                                                 AIPlayer.HP = AIPlayer.HP - damage;
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
                                                 Console.WriteLine(" ");
@@ -739,14 +757,9 @@ namespace CombatSystem
                                         {
                                             if (healCount < 1)
                                             {
-                                                healAmount = usePotion(Player1.HP, Player1.MaxHP);
-                                                Player1.HP = Player1.HP + healAmount;
-                                                if (Player1.HP > Player1.MaxHP)
-                                                {
-                                                    Player1.HP = Player1.MaxHP;
-                                                }
+                                                usePotion(Player1.HP, Player1.MaxHP);
                                                 Player1.Pots = Player1.Pots - 1;
-                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
+                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT!");
                                                 Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
                                                 Console.WriteLine(" ");
                                                 Player1.AP = Player1.AP - healCost;
@@ -865,9 +878,9 @@ namespace CombatSystem
                 Console.WriteLine(" ");
             }
 
-            static int getDamage(int atk, int targetDef)
+            static int getDamage(int atk, int weaponDmg, int targetDef)
             {
-                int damage = diceRoll(2, 6) + (atk / 7);
+                int damage = diceRoll(2, 6) + (weaponDmg + atk / 7);
                 int totalDmg = damage - (targetDef / 5);
                 return totalDmg;
             }
@@ -1088,8 +1101,8 @@ namespace CombatSystem
                                 }
                             }
                         }
-                        // FAVORS HEALING IF AI HP IS LESS THAN PLAYER HP
-                        else if (aiHP < playerHP)
+                        // FAVORS HEALING IF AI HP IS LESS THAN HALF OF PLAYER HP
+                        else if (aiHP < (playerHP / 2))
                         {
                             // IF AI CAN HEAL
                             if (aiHealCount < 1)
@@ -1116,7 +1129,7 @@ namespace CombatSystem
                             }
                         }
                     }
-                    // IF AI IS BETWEEN 50% AND 100%
+                    // IF AI HP IS BETWEEN 50% AND 100%
                     if (aiHP >= (aiMaxHP / 2) && aiHP < aiMaxHP)
                     {
                         // IF AI CAN ATTACK

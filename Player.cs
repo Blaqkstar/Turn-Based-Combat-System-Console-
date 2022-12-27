@@ -17,6 +17,7 @@ namespace Combat_System
         private int ap = 0;
         private int maxAP = 0;
         private int atk = 0;
+        private int weaponDamage = 5;
         private double crit = 4.95;
         private int def = 0;
         private int con = 5;
@@ -75,6 +76,12 @@ namespace Combat_System
         {
             get { return atk; }
             set { atk = value; }
+        }
+
+        public int WeaponDMG
+        {
+            get { return weaponDamage; }
+            set { weaponDamage = value; }
         }
 
         public double CRIT
