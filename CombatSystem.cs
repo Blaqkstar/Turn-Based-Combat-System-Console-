@@ -310,7 +310,7 @@ namespace CombatSystem
                             Console.WriteLine(" ");
                             Player1.AP = Player1.MaxAP; // REFRESHES AP AT THE START OF EACH TURN
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
-                            Console.WriteLine(AIPlayer.Name + " HP: " + AIPlayer.HP);
+                            Console.WriteLine(AIPlayer.Name + " APPEARS TO BE " + AIPlayer.Status);
                             Console.WriteLine(" ");
                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -472,7 +472,7 @@ namespace CombatSystem
                             AIPlayer.AP = AIPlayer.MaxAP; // REFILLS AP AT THE START OF EACH TURN
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
 
-                            while (AIPlayer.AP > defCost)
+                            while (AIPlayer.AP >= defCost)
                             {
                                 // DETERMINES AI CHOICE
                                 aiTurn = aiChoice(AIPlayer.HP, AIPlayer.MaxHP, AIPlayer.ATK, atkCount, AIPlayer.DEF, AIPlayer.MP, AIPlayer.AP, AIPlayer.Pots, healCount,
@@ -541,14 +541,14 @@ namespace CombatSystem
                                     break;
                                 }
 
-                                // DISPLAYS PLAYER AND AI REMAINING HP
-                                Console.WriteLine("----------");
-                                showStat(Player1.Name, "HP", Player1.HP);
-                                Console.WriteLine(AIPlayer.Name + " APPEARS TO BE " + AIPlayer.Status);
-                                Console.WriteLine("----------");
-                                Console.WriteLine(" ");
+                                
                             }
-
+                            // DISPLAYS PLAYER AND AI REMAINING HP
+                            Console.WriteLine("----------");
+                            showStat(Player1.Name, "HP", Player1.HP);
+                            Console.WriteLine(AIPlayer.Name + " APPEARS TO BE " + AIPlayer.Status);
+                            Console.WriteLine("----------");
+                            Console.WriteLine(" ");
                         }
                         Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
                         Console.WriteLine(" ");
@@ -583,7 +583,6 @@ namespace CombatSystem
 
                             // CHECKS AI ALIVE STATUS AT THE BEGINNING OF EACH TURN
                             AIPlayer.Alive = isAlive(AIPlayer.HP);
-                            AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); 
                             if (AIPlayer.Alive == false)
                             {
                                 break;
@@ -593,13 +592,14 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
+                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT FOXHOLING.
 
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
                             AIPlayer.AP = AIPlayer.MaxAP; // REFILLS AP AT THE START OF EACH TURN
+                            AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
 
-                            while (AIPlayer.AP > defCost)
+                            while (AIPlayer.AP >= defCost)
                             {
                                 // DETERMINES AI CHOICE
                                 aiTurn = aiChoice(AIPlayer.HP, AIPlayer.MaxHP, AIPlayer.ATK, atkCount, AIPlayer.DEF, AIPlayer.MP, AIPlayer.AP, AIPlayer.Pots, healCount,
@@ -654,6 +654,7 @@ namespace CombatSystem
                                     AIPlayer.Pots = AIPlayer.Pots - 1;
                                     Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                     Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
+                                    AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS
                                     Console.WriteLine(AIPlayer.Name + " APPEARS TO BE " + AIPlayer.Status);
                                     Console.WriteLine(" ");
                                     AIPlayer.AP = AIPlayer.AP - healCost;
@@ -667,15 +668,16 @@ namespace CombatSystem
                                     break;
                                 }
 
-                                // DISPLAYS PLAYER AND AI REMAINING HP
-                                Console.WriteLine("----------");
-                                showStat(Player1.Name, "HP", Player1.HP);
-                                AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP);
-                                Console.WriteLine(AIPlayer.Name + " APPEARS TO BE " + AIPlayer.Status);
-                                Console.WriteLine("----------");
-                                Console.WriteLine(" ");
+                                
                             }
                             Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
+                            Console.WriteLine(" ");
+
+                            // DISPLAYS PLAYER AND AI REMAINING HP
+                            Console.WriteLine("----------");
+                            showStat(Player1.Name, "HP", Player1.HP);
+                            Console.WriteLine(AIPlayer.Name + " APPEARS TO BE " + AIPlayer.Status);
+                            Console.WriteLine("----------");
                             Console.WriteLine(" ");
 
                             // CHECKS TARGET STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
@@ -684,6 +686,14 @@ namespace CombatSystem
                             {
                                 break;
                             }
+
+                            // DISPLAYS PLAYER AND AI REMAINING HP
+                            Console.WriteLine("----------");
+                            showStat(Player1.Name, "HP", Player1.HP);
+                            AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP);
+                            Console.WriteLine(AIPlayer.Name + " APPEARS TO BE " + AIPlayer.Status);
+                            Console.WriteLine("----------");
+                            Console.WriteLine(" ");
 
                             // -------------------------------- [ PLAYER TURN START ]
 
