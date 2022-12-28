@@ -310,7 +310,7 @@ namespace CombatSystem
                             Console.WriteLine(" ");
                             Player1.AP = Player1.MaxAP; // REFRESHES AP AT THE START OF EACH TURN
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
-                            Console.WriteLine(AIPlayer.Name + " " + AIPlayer.Status); // STATUS OUTPUT
+                            Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -341,7 +341,7 @@ namespace CombatSystem
                                                 AIPlayer.HP = AIPlayer.HP - damage;
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
                                                 AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                                Console.WriteLine("--- " + AIPlayer.Name + " " + AIPlayer.Status); // STATUS OUTPUT
+                                                Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
 
                                                 Console.WriteLine(" ");
                                             }
@@ -431,7 +431,6 @@ namespace CombatSystem
                                     // DISPLAYS PLAYER AND AI REMAINING HP
                                     Console.WriteLine("----------");
                                     showStat(Player1.Name, "HP", Player1.HP);
-                                    Console.WriteLine(AIPlayer.Name + " " + AIPlayer.Status);
                                     Console.WriteLine("----------");
                                     Console.WriteLine(" ");
 
@@ -511,6 +510,7 @@ namespace CombatSystem
                                     else if (atkCount > 0)
                                     {
                                         aiTurn = "d";
+                                        break;
                                     }
                                 }
                                 // IF AI CHOOSES TO DEFEND
@@ -534,7 +534,7 @@ namespace CombatSystem
                                     Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                     Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
                                     AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                    Console.WriteLine("--- " + AIPlayer.Name + " " + AIPlayer.Status); // STATUS OUTPUT
+                                    Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                                     Console.WriteLine(" ");
                                     AIPlayer.AP = AIPlayer.AP - healCost;
                                     healCount++;
@@ -552,7 +552,6 @@ namespace CombatSystem
                             // DISPLAYS PLAYER AND AI REMAINING HP
                             Console.WriteLine("----------");
                             showStat(Player1.Name, "HP", Player1.HP);
-                            Console.WriteLine(AIPlayer.Name + " " + AIPlayer.Status);
                             Console.WriteLine("----------");
                             Console.WriteLine(" ");
                         }
@@ -641,6 +640,7 @@ namespace CombatSystem
                                     else if (atkCount > 0)
                                     {
                                         aiTurn = "d";
+                                        break;
                                     }
                                 }
                                 // IF AI CHOOSES TO DEFEND
@@ -664,7 +664,7 @@ namespace CombatSystem
                                     Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                     Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
                                     AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                    Console.WriteLine("--- " + AIPlayer.Name + " " + AIPlayer.Status); // STATUS OUTPUT
+                                    Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                                     Console.WriteLine(" ");
                                     AIPlayer.AP = AIPlayer.AP - healCost;
                                     healCount++;
@@ -679,15 +679,12 @@ namespace CombatSystem
 
 
                             }
-                            Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
-                            Console.WriteLine(" ");
-
                             // DISPLAYS PLAYER AND AI REMAINING HP
                             Console.WriteLine("----------");
                             showStat(Player1.Name, "HP", Player1.HP);
-                            AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                            Console.WriteLine(AIPlayer.Name + " " + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine("----------");
+                            Console.WriteLine(" ");
+                            Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
                             Console.WriteLine(" ");
 
                             // CHECKS TARGET STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
@@ -710,7 +707,7 @@ namespace CombatSystem
                             Console.WriteLine(" ");
                             Player1.AP = Player1.MaxAP; // REFRESHES AP AT THE START OF EACH TURN
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
-                            Console.WriteLine(AIPlayer.Name + " " + AIPlayer.Status); // STATUS OUTPUT
+                            Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -741,7 +738,7 @@ namespace CombatSystem
                                                 AIPlayer.HP = AIPlayer.HP - damage;
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
                                                 AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                                Console.WriteLine("--- " + AIPlayer.Name + " " + AIPlayer.Status); // STATUS OUTPUT
+                                                Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
 
                                                 Console.WriteLine(" ");
                                             }
@@ -831,7 +828,6 @@ namespace CombatSystem
                                     // DISPLAYS PLAYER AND AI REMAINING HP
                                     Console.WriteLine("----------");
                                     showStat(Player1.Name, "HP", Player1.HP);
-                                    Console.WriteLine(AIPlayer.Name + " " + AIPlayer.Status);
                                     Console.WriteLine("----------");
                                     Console.WriteLine(" ");
 
@@ -961,9 +957,10 @@ namespace CombatSystem
                 string status = "UNDEFINED";
                 string healthy = " IS FRESH AND ENERGIZED. THEY ARE READY TO FIGHT.";
                 string slightlyHurt = " IS A LITTLE BRUISED.";
-                string hurt = "IS BLEEDING FROM THEIR WOUNDS AND EXTREMELY ANGRY.";
-                string faltering = "IS BLEEDING HEAVILY AND LIMPING.";
-                string lastBreath = "IS FADING QUICKLY. STRIKE NOW!";
+                string hurt = " IS BLEEDING FROM THEIR WOUNDS AND EXTREMELY ANGRY.";
+                string faltering = " IS BLEEDING HEAVILY AND LIMPING.";
+                string lastBreath = " IS FADING QUICKLY. STRIKE NOW!";
+                string dead = " IS DEAD.";
 
                 // ASSIGNS A STATUS BASED ON REMAINING HP
                 if (hp == maxHP)
@@ -986,6 +983,11 @@ namespace CombatSystem
                 {
                     status = lastBreath;
                 }
+                else if (hp <= 0)
+                {
+                    status = dead;
+                }
+
                 return status;
             }
 
