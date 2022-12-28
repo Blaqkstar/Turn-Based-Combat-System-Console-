@@ -528,16 +528,21 @@ namespace CombatSystem
                                 // IF AI CHOOSES TO HEAL
                                 else if (aiTurn == "h")
                                 {
-                                    healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
-                                    AIPlayer.HP = AIPlayer.HP + healAmount;
-                                    AIPlayer.Pots = AIPlayer.Pots - 1;
-                                    Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
-                                    Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
-                                    AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                    Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
-                                    Console.WriteLine(" ");
-                                    AIPlayer.AP = AIPlayer.AP - healCost;
-                                    healCount++;
+                                    if (AIPlayer.Pots > 0)
+                                    {
+                                        healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
+                                        AIPlayer.HP = AIPlayer.HP + healAmount;
+                                        AIPlayer.Pots = AIPlayer.Pots - 1;
+                                        Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
+                                        Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
+                                        AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                        Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
+                                        Console.WriteLine(" ");
+                                        AIPlayer.AP = AIPlayer.AP - healCost;
+                                        healCount++;
+                                    }
+                                    else aiTurn = "d";
+                                    break;
                                 }
 
                                 // CHECKS TARGET ALIVE STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
@@ -658,16 +663,21 @@ namespace CombatSystem
                                 // IF AI CHOOSES TO HEAL
                                 else if (aiTurn == "h")
                                 {
-                                    healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
-                                    AIPlayer.HP = AIPlayer.HP + healAmount;
-                                    AIPlayer.Pots = AIPlayer.Pots - 1;
-                                    Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
-                                    Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
-                                    AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                    Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
-                                    Console.WriteLine(" ");
-                                    AIPlayer.AP = AIPlayer.AP - healCost;
-                                    healCount++;
+                                    if (AIPlayer.Pots > 0)
+                                    {
+                                        healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
+                                        AIPlayer.HP = AIPlayer.HP + healAmount;
+                                        AIPlayer.Pots = AIPlayer.Pots - 1;
+                                        Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
+                                        Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
+                                        AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                        Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
+                                        Console.WriteLine(" ");
+                                        AIPlayer.AP = AIPlayer.AP - healCost;
+                                        healCount++;
+                                    }
+                                    else aiTurn = "d";
+                                    break;
                                 }
 
                                 // CHECKS TARGET STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
