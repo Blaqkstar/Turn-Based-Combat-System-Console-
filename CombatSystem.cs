@@ -467,7 +467,7 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT FOXHOLING.
+                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
@@ -540,7 +540,7 @@ namespace CombatSystem
                                     healCount++;
                                 }
 
-                                // CHECKS TARGET STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
+                                // CHECKS TARGET ALIVE STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
                                 Player1.Alive = isAlive(Player1.HP);
                                 if (Player1.Alive == false)
                                 {
@@ -597,7 +597,7 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT FOXHOLING.
+                            AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
