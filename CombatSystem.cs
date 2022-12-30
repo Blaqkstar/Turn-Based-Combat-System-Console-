@@ -71,6 +71,8 @@ namespace CombatSystem
             int ai_intel = 5;
             int ai_wis = 5;
             int ai_pots = 2;
+
+            // INSTANTIATE WEAPONS INTO A LIST HERE (0 = fists, 1 = knife, 2 = sword, 3 = axe, 4 = warhammer)
             
 
             string choice = "UNDEFINED"; // INITIALIZES VARIABLE TO HOLD PLAYER CHOICE
