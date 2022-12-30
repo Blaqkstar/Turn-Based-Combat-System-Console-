@@ -1,5 +1,7 @@
 ﻿using Combat_System;
 using System.Drawing;
+using System.Collections.Generic;
+
 
 namespace CombatSystem
 {
@@ -75,6 +77,10 @@ namespace CombatSystem
             string aiTurn = "UNDEFINED"; // INITIALIZES VARIABLE TO HOLD AI CHOICE
 
             Player Player1 = new Player(); // CREATES PLAYER GAME OBJ
+
+            showLogo(); // GAME TITLE HEADER
+            Console.WriteLine("//==================================================================================//\n\n");
+            showWelcomeMsg(); // WELCOME BLURB
 
             Console.Write("ENTER YOUR NAME: ");
             string userName = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -220,6 +226,22 @@ namespace CombatSystem
             // DISPLAYS AI STATS
             showStats(AIPlayer.Name, AIPlayer.HP, AIPlayer.MP, AIPlayer.AP, AIPlayer.ATK, AIPlayer.DEF, AIPlayer.CON, AIPlayer.STR, AIPlayer.DEX, AIPlayer.INTEL, AIPlayer.WIS);
 
+            // INITIALIZES WEAPONS
+            Fists Fists = new Fists();
+            Knife Knife = new Knife();
+            Sword Sword = new Sword();
+            Axe Axe = new Axe();
+            Warhammer Warhammer = new Warhammer();
+
+            // WEAPON CHOICE DIALOG
+            Console.WriteLine("CHOOSE A WEAPON: ");
+            Console.Write("");
+
+            // NEED TO CREATE SOMETHING LIKE: DISPLAY WEAPON STATS IN A 3X2 BLOCK > PROMPT USER TO CHOOSE WEAPON
+
+            // AFTER WEAPON CHOICE, ASSIGNS WEAPON TO PLAYER
+            Player1.WeaponDMG = getWeaponDamage();
+
             // -------------------------------- [ COMBAT START DIALOG ] -----------------------------------------------------------------------------------------
 
             Console.Write("START COMBAT? ENTER YES (Y) OR NO (N): ");
@@ -288,6 +310,8 @@ namespace CombatSystem
                     {
                         Player1.HP = Player1.MaxHP; // ENSURES THAT PLAYER HP BEGINS AT FULL
                         AIPlayer.HP = AIPlayer.MaxHP; // ENSURES THAT AI HP BEGINS AT FULL
+                        Player1.AP = Player1.MaxAP; // ENSURES THAT PLAYER AP BEGINS AT FULL
+                        AIPlayer.AP = AIPlayer.MaxAP; // ENSURES THAT AI AP BEGINS AT FULL
                         origPlayerDef = Player1.DEF; // HOLDS PLAYER ORIGINAL DEF VALUE
                         origAIDef = AIPlayer.DEF; // HOLDS AI ORIGINAL DEF VALUE
 
@@ -299,16 +323,31 @@ namespace CombatSystem
                         {
                             // -------------------------------- [ PLAYER TURN START ]
 
+                            // CHECKS PLAYER ALIVE STATUS AT THE BEGINNING OF EACH TURN
+                            Player1.Alive = isAlive(Player1.HP);
+                            if (Player1.Alive == false)
+                            {
+                                break;
+                            }
+
                             // RESETS ATK AND HEAL COUNTER AT THE BEGINNING OF EACH TURN
                             atkCount = 0;
                             healCount = 0;
 
+                            // IF AP IS NOT FULL, REGENS 4 PER TURN
+                            if (Player1.AP < Player1.MaxAP)
+                            {
+                                Player1.AP += 4;
+                            }
+                            if (Player1.AP > Player1.MaxAP)
+                            {
+                                Player1.AP = Player1.MaxAP;
+                            }
+
                             Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
-
                             Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
-                            Player1.AP = Player1.MaxAP; // REFRESHES AP AT THE START OF EACH TURN
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
                             Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
@@ -467,11 +506,20 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
+                            // IF AP IS NOT FULL, REGENS 4 PER TURN
+                            if (AIPlayer.AP < AIPlayer.MaxAP)
+                            {
+                                AIPlayer.AP += 4;
+                            }
+                            if (AIPlayer.AP > AIPlayer.MaxAP)
+                            {
+                                AIPlayer.AP = AIPlayer.MaxAP;
+                            }
+
                             AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
-                            AIPlayer.AP = AIPlayer.MaxAP; // REFILLS AP AT THE START OF EACH TURN
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
 
                             while (AIPlayer.AP >= defCost)
@@ -581,6 +629,8 @@ namespace CombatSystem
                     {
                         Player1.HP = Player1.MaxHP; // ENSURES THAT PLAYER HP BEGINS AT FULL
                         AIPlayer.HP = AIPlayer.MaxHP; // ENSURES THAT AI HP BEGINS AT FULL
+                        Player1.AP = Player1.MaxAP; // ENSURES THAT PLAYER AP BEGINS AT FULL
+                        AIPlayer.AP = AIPlayer.MaxAP; // ENSURES THAT AI AP BEGINS AT FULL
                         origPlayerDef = Player1.DEF; // HOLDS PLAYER ORIGINAL DEF VALUE
                         origAIDef = AIPlayer.DEF; // HOLDS AI ORIGINAL DEF VALUE
 
@@ -602,11 +652,20 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
+                            // IF AP IS NOT FULL, REGENS 4 PER TURN
+                            if (AIPlayer.AP < AIPlayer.MaxAP)
+                            {
+                                AIPlayer.AP += 4;
+                            }
+                            if (AIPlayer.AP > AIPlayer.MaxAP)
+                            {
+                                AIPlayer.AP = AIPlayer.MaxAP;
+                            }
+
                             AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
-                            AIPlayer.AP = AIPlayer.MaxAP; // REFILLS AP AT THE START OF EACH TURN
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
 
                             while (AIPlayer.AP >= defCost)
@@ -706,6 +765,13 @@ namespace CombatSystem
 
                             // -------------------------------- [ PLAYER TURN START ]
 
+                            // CHECKS PLAYER ALIVE STATUS AT THE BEGINNING OF EACH TURN
+                            Player1.Alive = isAlive(Player1.HP);
+                            if (Player1.Alive == false)
+                            {
+                                break;
+                            }
+
                             // RESETS ATK AND HEAL COUNTER AT THE BEGINNING OF EACH TURN
                             atkCount = 0;
                             healCount = 0;
@@ -715,7 +781,16 @@ namespace CombatSystem
 
                             Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
-                            Player1.AP = Player1.MaxAP; // REFRESHES AP AT THE START OF EACH TURN
+
+                            // IF AP IS NOT FULL, REGENS 4 PER TURN
+                            if (Player1.AP < Player1.MaxAP)
+                            {
+                                Player1.AP += 4;
+                            }
+                            if (Player1.AP > Player1.MaxAP)
+                            {
+                                Player1.AP = Player1.MaxAP;
+                            }
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
                             Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
@@ -905,6 +980,33 @@ namespace CombatSystem
                 Console.WriteLine(target + " " + declarator + ": " + stat);
             }
 
+            static void showLogo()
+            {
+                string logo =
+                "                                     ____                               \n" +
+                "|``````.         |         |        |                   |               \n" +
+                "|       |        |         |        |______             |               \n" +
+                "|       |        |         |        |                   |               \n" +
+                "|......'         `._______.'        |___________        |_______        \n" +
+                "                                                                        \n" +
+                "                             (C) Blaqkstar 2022. All Rights Reserved\n\n";
+
+                Console.WriteLine(logo);
+            }
+
+            static void showWelcomeMsg()
+            {
+                string msg =
+                "Hello there! Thanks for checking out DUEL! This is a simple project that I am using to learn more about coding while on winter break from my software engineering degree.\n" +
+                "Updates and bug fixes will go out as I can get them done, but since the DUEL dev team is just me, I wouldn't expect them to be all that regular.\n\n" +
+                "I hope you enjoy the game!\n\n" +
+                "o7\n" +
+                "Regards,\n" +
+                "// Blaqkstar //\n\n\n";
+
+                Console.WriteLine(msg);
+            }
+
             static void showStats(string targetName, int hp, int mp, int ap, int atk, int def, int con, int str, int dex, int intel, int wis)
             {
                 Console.WriteLine(targetName + " STATS:");
@@ -924,11 +1026,32 @@ namespace CombatSystem
                 Console.WriteLine(" ");
             }
 
+            static void showWeapons()
+            {
+                int minDmg = 0;
+                int maxDmg = 0;
+                int atkCost = 0;
+
+
+                Console.WriteLine("FISTS\tKNIFE\tSWORD\tAXE\tWARHAMMER");
+                Console.WriteLine("---------------------------------------------------------------");
+                Console.WriteLine("MIN DMG: " + Fists.MinDmg + "\tMIN DMG: " + Knife.MinDmg + "\tMIN DMG " + Sword.MinDmg + "\tMIN DMG: " + Axe.MinDmg + "\tMIN DMG: " + Warhammer.MinDmg);
+            }
+
             static int getDamage(int atk, int weaponDmg, int targetDef)
             {
                 int damage = diceRoll(2, 6) + (weaponDmg + atk / 7);
                 int totalDmg = damage - (targetDef / 5);
                 return totalDmg;
+            }
+
+            static int getWeaponDamage(int minDmg, int maxDmg)
+            {
+                int damage = 0;
+                Random rand = new Random();
+                damage = rand.Next(minDmg, maxDmg);
+
+                return damage;
             }
 
             static int diceRoll(int dice, int sides)
@@ -1042,15 +1165,8 @@ namespace CombatSystem
                 return hitChance;
             }
 
-            static double critChance(int aDex, double aCrit, int tDex)
-            {
-                double critChance;
-                double aCritBase = (aDex / 4) / 3;
-                double tCritBase = (tDex / 4) / 3;
+            
 
-                critChance = (aCritBase - tCritBase) + aCrit;
-                return critChance;
-            }
 
             // AI BEHAVIORAL ALGORITHM STARTS HERE
             static string aiChoice(int aiHP, int aiMaxHP, int aiATK, int aiATKCount, int aiDEF, int aiMP, int aiAP, int aiPots,
@@ -1267,6 +1383,8 @@ namespace CombatSystem
                 return choice;
                 
             }
+
+
         }
     }
 }
