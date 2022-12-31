@@ -19,6 +19,8 @@ namespace Combat_System
         private int atk = 0;
         private string weaponName = "UNDEFINED";
         private int weaponDamage = 0;
+        private int minDmg = 0;
+        private int maxDmg = 0;
         private double crit = 4.95;
         private int def = 0;
         private int con = 5;
@@ -89,6 +91,18 @@ namespace Combat_System
         {
             get { return weaponDamage; }
             set { weaponDamage = value; }
+        }
+
+        public int MinDMG
+        {
+            get { return minDmg; }
+            set { minDmg = value; }
+        }
+
+        public int MaxDMG
+        {
+            get { return maxDmg; }
+            set { maxDmg = value; }
         }
 
         public double CRIT

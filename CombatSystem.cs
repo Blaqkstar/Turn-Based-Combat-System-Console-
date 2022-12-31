@@ -71,11 +71,10 @@ namespace CombatSystem
             int ai_intel = 5;
             int ai_wis = 5;
             int ai_pots = 2;
-
-            // INSTANTIATE WEAPONS INTO A LIST HERE (0 = fists, 1 = knife, 2 = sword, 3 = axe, 4 = warhammer)
             
 
             string choice = "UNDEFINED"; // INITIALIZES VARIABLE TO HOLD PLAYER CHOICE
+            int choice2 = 0; // DECLARES VARIABLE TO HOLD SPECIALIZED INT CHOICES
             string aiTurn = "UNDEFINED"; // INITIALIZES VARIABLE TO HOLD AI CHOICE
 
             Player Player1 = new Player(); // CREATES PLAYER GAME OBJ
@@ -230,19 +229,65 @@ namespace CombatSystem
 
             // INITIALIZES WEAPONS
             Fists Fists = new Fists();
+            Fists.Name = "Fists";
             Knife Knife = new Knife();
+            Knife.Name = "Knife";
             Sword Sword = new Sword();
+            Sword.Name = "Sword";
             Axe Axe = new Axe();
+            Axe.Name = "Axe";
             Warhammer Warhammer = new Warhammer();
+            Warhammer.Name = "Warhammer";
 
             // WEAPON CHOICE DIALOG
-            Console.WriteLine("CHOOSE A WEAPON: ");
-            Console.Write("");
+            showWeapons();
+            Console.Write("CHOOSE YOUR WEAPON: ");
+            choice = Console.ReadLine();
+            int.TryParse(choice, out choice2);
 
-            // NEED TO CREATE SOMETHING LIKE: DISPLAY WEAPON STATS IN A 3X2 BLOCK > PROMPT USER TO CHOOSE WEAPON
-
-            // AFTER WEAPON CHOICE, ASSIGNS WEAPON TO PLAYER
-            Player1.WeaponDMG = getWeaponDamage();
+            if (choice2 < 1 && choice2 > 5)
+            {
+                while (choice2 < 1 && choice2 > 5)
+                {
+                    // WEAPON CHOICE DIALOG
+                    Console.WriteLine(invalid);
+                    Console.WriteLine("");
+                    showWeapons();
+                    Console.Write("CHOOSE YOUR WEAPON: ");
+                    choice = Console.ReadLine();
+                    int.TryParse(choice, out choice2);
+                }
+            }
+            else if (choice2 >= 1 && choice2 <= 5 )
+            {
+                if (choice2 == 1)
+                {
+                    Player1.WeaponName = Fists.Name;
+                    Player1.WeaponDMG = Fists.Dmg;
+                }
+                else if (choice2 == 2)
+                {
+                    Player1.WeaponName = Knife.Name;
+                    Player1.WeaponDMG = Knife.Dmg;
+                }
+                else if (choice2 == 3)
+                {
+                    Player1.WeaponName = Sword.Name;
+                    Player1.WeaponDMG = Sword.Dmg;
+                }
+                else if (choice2 == 4)
+                {
+                    Player1.WeaponName= Axe.Name;
+                    Player1.WeaponDMG= Axe.Dmg;
+                }
+                else if (choice2 == 5)
+                {
+                    Player1.WeaponName = Warhammer.Name;
+                    Player1.WeaponDMG = Warhammer.Dmg;
+                }
+            }
+            Console.WriteLine("YOU'VE EQUIPPED YOUR " + Player1.WeaponName);
+            Console.WriteLine("");
 
             // -------------------------------- [ COMBAT START DIALOG ] -----------------------------------------------------------------------------------------
 
@@ -378,6 +423,7 @@ namespace CombatSystem
                                             // IF SUCCESSFUL
                                             if (hitRoll >= AIPlayer.DEF)
                                             {
+                                                getWeaponDamage(Player1.MinDMG, Player1.MaxDMG);
                                                 damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
                                                 AIPlayer.HP = AIPlayer.HP - damage;
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
@@ -999,10 +1045,10 @@ namespace CombatSystem
             static void showWelcomeMsg()
             {
                 string msg =
-                "Hello there! Thanks for checking out DUEL! This is a simple project that I am using to learn more about coding while on winter break from my software engineering degree.\n" +
-                "Updates and bug fixes will go out as I can get them done, but since the DUEL dev team is just me, I wouldn't expect them to be all that regular.\n\n" +
-                "I hope you enjoy the game!\n\n" +
-                "o7\n" +
+                "Hello there! Thanks for checking out DUEL! This is a simple project that I am using to learn more about coding while\n" +
+                "on winter break from my software engineering degree. Updates and bug fixes will go out as I can get them done,\n" +
+                "but since the DUEL dev team is just me, I wouldn't expect them to be all that regular. I hope you enjoy the game!\n\n" +
+                "o7\n\n" +
                 "Regards,\n" +
                 "// Blaqkstar //\n\n\n";
 
@@ -1028,16 +1074,19 @@ namespace CombatSystem
                 Console.WriteLine(" ");
             }
 
-            static void showWeapons()
+            void showWeapons()
             {
                 int minDmg = 0;
                 int maxDmg = 0;
                 int atkCost = 0;
 
 
-                Console.WriteLine("FISTS\tKNIFE\tSWORD\tAXE\tWARHAMMER");
-                Console.WriteLine("---------------------------------------------------------------");
-                Console.WriteLine("MIN DMG: " + Fists.MinDmg + "\tMIN DMG: " + Knife.MinDmg + "\tMIN DMG " + Sword.MinDmg + "\tMIN DMG: " + Axe.MinDmg + "\tMIN DMG: " + Warhammer.MinDmg);
+                Console.WriteLine("FISTS (1)\tKNIFE (2)\tSWORD (3)\tAXE (4)\t\tWARHAMMER (5)");
+                Console.WriteLine("---------------------------------------------------------------------------");
+                Console.WriteLine("MIN DMG: " + Fists.MinDmg + "\tMIN DMG: " + Knife.MinDmg + "\tMIN DMG: " + Sword.MinDmg + "\tMIN DMG: " + Axe.MinDmg + "\tMIN DMG: " + Warhammer.MinDmg);
+                Console.WriteLine("MAX DMG: " + Fists.MaxDmg + "\tMAX DMG: " + Knife.MaxDmg + "\tMAX DMG: " + Sword.MaxDmg + "\tMAX DMG: " + Axe.MaxDmg + "\tMAX DMG: " + Warhammer.MaxDmg);
+                Console.WriteLine("ATK COST: " + Fists.AtkCost + "\tATK COST: " + Knife.AtkCost + "\tATK COST: " + Sword.AtkCost + "\tATK COST: " + Axe.AtkCost + "\tATK COST: " + Warhammer.AtkCost);
+                Console.WriteLine(" ");
             }
 
             static int getDamage(int atk, int weaponDmg, int targetDef)
@@ -1047,7 +1096,7 @@ namespace CombatSystem
                 return totalDmg;
             }
 
-            static int getWeaponDamage(int minDmg, int maxDmg)
+            int getWeaponDamage(int minDmg, int maxDmg)
             {
                 int damage = 0;
                 Random rand = new Random();
@@ -1138,11 +1187,12 @@ namespace CombatSystem
                 return alive;
             }
 
-            static int useAttack(int atk, int targetHP, int targetDef)
+            /*static int useAttack(int minDmg, int maxDmg, int targetHP, int targetDef)
             {
+                int atk = getWeaponDamage()
                 targetHP = (targetHP + targetDef) - atk;
                 return targetHP;
-            }
+            }*/
 
             static int useDefend(int def)
             {
