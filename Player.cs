@@ -17,6 +17,7 @@ namespace Combat_System
         private int ap = 0;
         private int maxAP = 0;
         private int atk = 0;
+        private int atkCost = 0;
         private string weaponName = "UNDEFINED";
         private int weaponDamage = 0;
         private int minDmg = 0;
@@ -79,6 +80,12 @@ namespace Combat_System
         {
             get { return atk; }
             set { atk = value; }
+        }
+
+        public int AtkCost
+        {
+            get { return atkCost; }
+            set { atkCost = value; }
         }
 
         public string WeaponName

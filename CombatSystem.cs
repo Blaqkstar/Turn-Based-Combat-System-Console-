@@ -10,9 +10,9 @@ namespace CombatSystem
         static void Main(string[] args)
         {
             // ABILITY AP COST
-            int atkCost = 5;
-            int defCost = 3;
-            int healCost = 5;
+            int atkCost = 0;
+            int defCost = 2;
+            int healCost = 3;
 
             // INPUT ERROR MESSAGE
             string invalid = "Invalid entry.";
@@ -71,7 +71,19 @@ namespace CombatSystem
             int ai_intel = 5;
             int ai_wis = 5;
             int ai_pots = 2;
-            
+
+            // INITIALIZES WEAPONS
+            Fists Fists = new Fists();
+            Fists.Name = "Fists";
+            Knife Knife = new Knife();
+            Knife.Name = "Knife";
+            Sword Sword = new Sword();
+            Sword.Name = "Sword";
+            Axe Axe = new Axe();
+            Axe.Name = "Axe";
+            Warhammer Warhammer = new Warhammer();
+            Warhammer.Name = "Warhammer";
+
 
             string choice = "UNDEFINED"; // INITIALIZES VARIABLE TO HOLD PLAYER CHOICE
             int choice2 = 0; // DECLARES VARIABLE TO HOLD SPECIALIZED INT CHOICES
@@ -116,7 +128,7 @@ namespace CombatSystem
             Player1.AP = Player1.MaxAP;
 
             // DISPLAYS STATS
-            showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS);
+            showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS, Player1.WeaponName);
 
             Console.Write("WOULD YOU LIKE TO CONTINUE (C) OR RE-ROLL (R)? "); // USER INPUT PROMPT
             choice = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -161,7 +173,7 @@ namespace CombatSystem
                         Player1.AP = Player1.MaxAP;
 
                         // DISPLAYS PLAYER STATS
-                        showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS);
+                        showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS, Player1.WeaponName);
 
                         Console.Write("WOULD YOU LIKE TO CONTINUE (C) OR RE-ROLL (R)? "); // USER INPUT PROMPT
                         choice = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -224,24 +236,47 @@ namespace CombatSystem
             AIPlayer.MP = AIPlayer.MaxMP;
             AIPlayer.AP = AIPlayer.MaxAP;
 
+            // SETS AI WEAPON & ATK COST
+            int aiWeapon = getEnemyWeapon();
+            if (aiWeapon == 1)
+            {
+                AIPlayer.WeaponName = Fists.Name;
+                AIPlayer.WeaponDMG = Fists.Dmg;
+                AIPlayer.AtkCost = Fists.AtkCost;
+            }
+            else if (aiWeapon == 2)
+            {
+                AIPlayer.WeaponName = Knife.Name;
+                AIPlayer.WeaponDMG = Knife.Dmg;
+                AIPlayer.AtkCost = Knife.AtkCost;
+            }
+            else if (aiWeapon == 3)
+            {
+                AIPlayer.WeaponName = Sword.Name;
+                AIPlayer.WeaponDMG = Sword.Dmg;
+                AIPlayer.AtkCost = Sword.AtkCost;
+            }
+            else if (aiWeapon == 4)
+            {
+                AIPlayer.WeaponName = Axe.Name;
+                AIPlayer.WeaponDMG = Axe.Dmg;
+                AIPlayer.AtkCost = Axe.AtkCost;
+            }
+            else if (aiWeapon == 5)
+            {
+                AIPlayer.WeaponName = Warhammer.Name;
+                AIPlayer.WeaponDMG = Warhammer.Dmg;
+                AIPlayer.AtkCost = Warhammer.AtkCost;
+            }
             // DISPLAYS AI STATS
-            showStats(AIPlayer.Name, AIPlayer.HP, AIPlayer.MP, AIPlayer.AP, AIPlayer.ATK, AIPlayer.DEF, AIPlayer.CON, AIPlayer.STR, AIPlayer.DEX, AIPlayer.INTEL, AIPlayer.WIS);
-
-            // INITIALIZES WEAPONS
-            Fists Fists = new Fists();
-            Fists.Name = "Fists";
-            Knife Knife = new Knife();
-            Knife.Name = "Knife";
-            Sword Sword = new Sword();
-            Sword.Name = "Sword";
-            Axe Axe = new Axe();
-            Axe.Name = "Axe";
-            Warhammer Warhammer = new Warhammer();
-            Warhammer.Name = "Warhammer";
+            showStats(AIPlayer.Name, AIPlayer.HP, AIPlayer.MP, AIPlayer.AP, AIPlayer.ATK, AIPlayer.DEF, AIPlayer.CON, AIPlayer.STR, AIPlayer.DEX, AIPlayer.INTEL, AIPlayer.WIS, AIPlayer.WeaponName);
 
             // WEAPON CHOICE DIALOG
+            Console.WriteLine("CHOOSE YOUR WEAPON: ");
+            Console.WriteLine("");
             showWeapons();
-            Console.Write("CHOOSE YOUR WEAPON: ");
+            Console.WriteLine("");
+            Console.Write("CHOICE: ");
             choice = Console.ReadLine();
             int.TryParse(choice, out choice2);
 
@@ -252,8 +287,11 @@ namespace CombatSystem
                     // WEAPON CHOICE DIALOG
                     Console.WriteLine(invalid);
                     Console.WriteLine("");
+                    Console.WriteLine("CHOOSE YOUR WEAPON: ");
+                    Console.WriteLine("");
                     showWeapons();
-                    Console.Write("CHOOSE YOUR WEAPON: ");
+                    Console.WriteLine("");
+                    Console.Write("CHOICE: ");
                     choice = Console.ReadLine();
                     int.TryParse(choice, out choice2);
                 }
@@ -264,26 +302,31 @@ namespace CombatSystem
                 {
                     Player1.WeaponName = Fists.Name;
                     Player1.WeaponDMG = Fists.Dmg;
+                    Player1.AtkCost = Fists.AtkCost;
                 }
                 else if (choice2 == 2)
                 {
                     Player1.WeaponName = Knife.Name;
                     Player1.WeaponDMG = Knife.Dmg;
+                    Player1.AtkCost = Knife.AtkCost;
                 }
                 else if (choice2 == 3)
                 {
                     Player1.WeaponName = Sword.Name;
                     Player1.WeaponDMG = Sword.Dmg;
+                    Player1.AtkCost = Sword.AtkCost;
                 }
                 else if (choice2 == 4)
                 {
                     Player1.WeaponName= Axe.Name;
                     Player1.WeaponDMG= Axe.Dmg;
+                    Player1.AtkCost = Axe.AtkCost;
                 }
                 else if (choice2 == 5)
                 {
                     Player1.WeaponName = Warhammer.Name;
                     Player1.WeaponDMG = Warhammer.Dmg;
+                    Player1.AtkCost = Warhammer.AtkCost;
                 }
             }
             Console.WriteLine("YOU'VE EQUIPPED YOUR " + Player1.WeaponName);
@@ -338,6 +381,7 @@ namespace CombatSystem
                     AIPlayer.Init = diceRoll(1, 20);
                     Console.WriteLine("--- " + AIPlayer.Name + " rolled " + AIPlayer.Init);
                     Console.WriteLine(" ");
+                    
 
                     // IF INIT ROLL ENDS IN DRAW
                     if (Player1.Init == AIPlayer.Init)
@@ -381,15 +425,11 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            // IF AP IS NOT FULL, REGENS 4 PER TURN
-                            if (Player1.AP < Player1.MaxAP)
-                            {
-                                Player1.AP += 4;
-                            }
-                            if (Player1.AP > Player1.MaxAP)
-                            {
-                                Player1.AP = Player1.MaxAP;
-                            }
+                            // DETERMINES atkCost BASED ON THE EQUIPPED WEAPON
+                            atkCost = getAtkCost(Player1.AtkCost);
+
+                            // IF AP IS NOT FULL, REGENS PER TURN
+                            Player1.AP = apRegen(Player1.AP, Player1.MaxAP, Player1.DEX, Player1.INTEL);
 
                             Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
@@ -413,40 +453,60 @@ namespace CombatSystem
                                     // IF PLAYER CHOOSES TO ATTACK
                                     if (choice == "a")
                                     {
-                                        if (atkCount < 1)
+                                        if (Player1.AP >= atkCost)
                                         {
-                                            // HIT ROLL
-                                            Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
-                                            hitRoll = rollHit();
-                                            Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
-
-                                            // IF SUCCESSFUL
-                                            if (hitRoll >= AIPlayer.DEF)
+                                            if (atkCount < 1)
                                             {
-                                                getWeaponDamage(Player1.MinDMG, Player1.MaxDMG);
-                                                damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
-                                                AIPlayer.HP = AIPlayer.HP - damage;
-                                                Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
-                                                AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                                Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
+                                                // HIT ROLL
+                                                Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
+                                                hitRoll = rollHit();
+                                                Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
 
-                                                Console.WriteLine(" ");
+                                                // IF SUCCESSFUL
+                                                if (hitRoll >= AIPlayer.DEF)
+                                                {
+                                                    getWeaponDamage(Player1.MinDMG, Player1.MaxDMG);
+                                                    damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
+                                                    AIPlayer.HP = AIPlayer.HP - damage;
+                                                    Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
+                                                    AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                                    Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
+
+                                                    Console.WriteLine(" ");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
+                                                    Console.WriteLine(" ");
+                                                }
+                                                // CALCULATES REMAINING AP
+                                                Player1.AP = Player1.AP - atkCost;
+                                                atkCount++;
                                             }
                                             else
                                             {
-                                                Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
+                                                Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
                                                 Console.WriteLine(" ");
+                                                Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                                                Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
+
+                                                Console.WriteLine(" ");
+                                                Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                                                choice = Console.ReadLine(); // ACCEPTS USER INPUT
+                                                choice = choice.Trim(); // TRIMS WHITE SPACE
+                                                Console.WriteLine(" ");
+                                                foreach (char c in choice)
+                                                {
+                                                    char.ToLower(c);
+                                                }
                                             }
-                                            // CALCULATES REMAINING AP
-                                            Player1.AP = Player1.AP - atkCost;
-                                            atkCount++;
                                         }
                                         else
                                         {
-                                            Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
+                                            Console.WriteLine("INSUFFICIENT ACTION POINTS!");
                                             Console.WriteLine(" ");
-                                            Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
-                                            Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
+                                            Console.WriteLine(Player1.Name + " HP: " + Player1.HP);
+                                            Console.WriteLine("REMAINING AP: " + Player1.AP);
 
                                             Console.WriteLine(" ");
                                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
@@ -462,44 +522,67 @@ namespace CombatSystem
                                     // IF PLAYER CHOOSES TO DEFEND
                                     else if (choice == "d")
                                     {
-                                        Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
-                                        Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
-                                        Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
-                                        Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
-                                        Console.WriteLine(" ");
-                                        Player1.AP = Player1.AP - defCost;
-                                        choice = "e";
-                                        break;
+                                        if (Player1.AP >= defCost)
+                                        {
+                                            Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
+                                            Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
+                                            Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
+                                            Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
+                                            Console.WriteLine(" ");
+                                            Player1.AP = Player1.AP - defCost;
+                                            choice = "e";
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("INSUFFICIENT ACTION POINTS!");
+                                            Console.WriteLine(" ");
+                                            Console.WriteLine(Player1.Name + " HP: " + Player1.HP);
+                                            Console.WriteLine("REMAINING AP: " + Player1.AP);
+
+                                            Console.WriteLine(" ");
+                                            Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                                            choice = Console.ReadLine(); // ACCEPTS USER INPUT
+                                            choice = choice.Trim(); // TRIMS WHITE SPACE
+                                            Console.WriteLine(" ");
+                                            foreach (char c in choice)
+                                            {
+                                                char.ToLower(c);
+                                            }
+                                        }
                                     }
                                     // IF PLAYER CHOOSES TO HEAL
                                     else if (choice == "h")
                                     {
-                                        if (Player1.Pots > 0)
+                                        if (Player1.AP >= healCost)
                                         {
-                                            if (healCount < 1)
+                                            if (Player1.Pots > 0)
                                             {
-                                                healAmount = usePotion(Player1.HP, Player1.MaxHP);
-                                                Player1.HP = Player1.HP + healAmount;
-                                                if (Player1.HP > Player1.MaxHP)
+                                                if (healCount < 1)
                                                 {
-                                                    Player1.HP = Player1.MaxHP;
+                                                    healAmount = usePotion(Player1.HP, Player1.MaxHP);
+                                                    Player1.HP = Player1.HP + healAmount;
+                                                    if (Player1.HP > Player1.MaxHP)
+                                                    {
+                                                        Player1.HP = Player1.MaxHP;
+                                                    }
+                                                    Player1.Pots = Player1.Pots - 1;
+                                                    Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
+                                                    Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
+                                                    Console.WriteLine(" ");
+                                                    Player1.AP = Player1.AP - healCost;
+                                                    healCount++;
                                                 }
-                                                Player1.Pots = Player1.Pots - 1;
-                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
-                                                Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
-                                                Console.WriteLine(" ");
-                                                Player1.AP = Player1.AP - healCost;
-                                                healCount++;
+                                                else
+                                                {
+                                                    Console.WriteLine("YOU CAN ONLY HEAL ONCE PER ROUND!");
+                                                }
                                             }
                                             else
                                             {
-                                                Console.WriteLine("YOU CAN ONLY HEAL ONCE PER ROUND!");
+                                                Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
+                                                Player1.AP = Player1.AP - (healCost / 2);
                                             }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
-                                            Player1.AP = Player1.AP - (healCost / 2);
                                         }
                                     }
                                     else
@@ -554,15 +637,8 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            // IF AP IS NOT FULL, REGENS 4 PER TURN
-                            if (AIPlayer.AP < AIPlayer.MaxAP)
-                            {
-                                AIPlayer.AP += 4;
-                            }
-                            if (AIPlayer.AP > AIPlayer.MaxAP)
-                            {
-                                AIPlayer.AP = AIPlayer.MaxAP;
-                            }
+                            // IF AP IS NOT FULL, REGENS PER TURN
+                            AIPlayer.AP = apRegen(AIPlayer.AP, AIPlayer.MaxAP, AIPlayer.DEX, AIPlayer.INTEL);
 
                             AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
@@ -591,7 +667,7 @@ namespace CombatSystem
                                         {
                                             damage = getDamage(AIPlayer.ATK, AIPlayer.WeaponDMG, Player1.DEF);
                                             Player1.HP = Player1.HP - damage;
-                                            Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE!");
+                                            Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE WITH THEIR " + AIPlayer.WeaponName + "!");
                                             Console.WriteLine(" ");
                                         }
                                         else
@@ -628,6 +704,10 @@ namespace CombatSystem
                                     {
                                         healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
                                         AIPlayer.HP = AIPlayer.HP + healAmount;
+                                        if (AIPlayer.HP > AIPlayer.MaxHP)
+                                        {
+                                            AIPlayer.HP = AIPlayer.MaxHP;
+                                        }
                                         AIPlayer.Pots = AIPlayer.Pots - 1;
                                         Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                         Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
@@ -637,8 +717,11 @@ namespace CombatSystem
                                         AIPlayer.AP = AIPlayer.AP - healCost;
                                         healCount++;
                                     }
-                                    else aiTurn = "d";
-                                    break;
+                                    else
+                                    {
+                                        aiTurn = "d";
+                                        break;
+                                    }
                                 }
 
                                 // CHECKS TARGET ALIVE STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
@@ -700,15 +783,8 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
-                            // IF AP IS NOT FULL, REGENS 4 PER TURN
-                            if (AIPlayer.AP < AIPlayer.MaxAP)
-                            {
-                                AIPlayer.AP += 4;
-                            }
-                            if (AIPlayer.AP > AIPlayer.MaxAP)
-                            {
-                                AIPlayer.AP = AIPlayer.MaxAP;
-                            }
+                            // IF AP IS NOT FULL, REGENS PER TURN
+                            AIPlayer.AP = apRegen(AIPlayer.AP, AIPlayer.MaxAP, AIPlayer.DEX, AIPlayer.INTEL);
 
                             AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
@@ -737,7 +813,7 @@ namespace CombatSystem
                                         {
                                             damage = getDamage(AIPlayer.ATK, AIPlayer.WeaponDMG, Player1.DEF);
                                             Player1.HP = Player1.HP - damage;
-                                            Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE!");
+                                            Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE WITH THEIR " + AIPlayer.WeaponName + "!");
                                             Console.WriteLine(" ");
                                         }
                                         else
@@ -774,6 +850,10 @@ namespace CombatSystem
                                     {
                                         healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
                                         AIPlayer.HP = AIPlayer.HP + healAmount;
+                                        if (AIPlayer.HP > AIPlayer.MaxHP)
+                                        {
+                                            AIPlayer.HP = AIPlayer.MaxHP;
+                                        }
                                         AIPlayer.Pots = AIPlayer.Pots - 1;
                                         Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
                                         Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
@@ -783,8 +863,11 @@ namespace CombatSystem
                                         AIPlayer.AP = AIPlayer.AP - healCost;
                                         healCount++;
                                     }
-                                    else aiTurn = "d";
-                                    break;
+                                    else
+                                    {
+                                        aiTurn = "d";
+                                        break;
+                                    }
                                 }
 
                                 // CHECKS TARGET STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
@@ -824,21 +907,13 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
+                            // IF AP IS NOT FULL, REGENS PER TURN
+                            Player1.AP = apRegen(Player1.AP, Player1.MaxAP, Player1.DEX, Player1.INTEL);
+
                             Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
-
                             Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
-
-                            // IF AP IS NOT FULL, REGENS 4 PER TURN
-                            if (Player1.AP < Player1.MaxAP)
-                            {
-                                Player1.AP += 4;
-                            }
-                            if (Player1.AP > Player1.MaxAP)
-                            {
-                                Player1.AP = Player1.MaxAP;
-                            }
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
                             Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
@@ -857,39 +932,60 @@ namespace CombatSystem
                                     // IF PLAYER CHOOSES TO ATTACK
                                     if (choice == "a")
                                     {
-                                        if (atkCount < 1)
+                                        if (Player1.AP >= atkCost)
                                         {
-                                            // HIT ROLL
-                                            Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
-                                            hitRoll = rollHit();
-                                            Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
-
-                                            // IF SUCCESSFUL
-                                            if (hitRoll >= AIPlayer.DEF)
+                                            if (atkCount < 1)
                                             {
-                                                damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
-                                                AIPlayer.HP = AIPlayer.HP - damage;
-                                                Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
-                                                AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
-                                                Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
+                                                // HIT ROLL
+                                                Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
+                                                hitRoll = rollHit();
+                                                Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
 
-                                                Console.WriteLine(" ");
+                                                // IF SUCCESSFUL
+                                                if (hitRoll >= AIPlayer.DEF)
+                                                {
+                                                    getWeaponDamage(Player1.MinDMG, Player1.MaxDMG);
+                                                    damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
+                                                    AIPlayer.HP = AIPlayer.HP - damage;
+                                                    Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
+                                                    AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                                    Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
+
+                                                    Console.WriteLine(" ");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
+                                                    Console.WriteLine(" ");
+                                                }
+                                                // CALCULATES REMAINING AP
+                                                Player1.AP = Player1.AP - atkCost;
+                                                atkCount++;
                                             }
                                             else
                                             {
-                                                Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
+                                                Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
                                                 Console.WriteLine(" ");
+                                                Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                                                Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
+
+                                                Console.WriteLine(" ");
+                                                Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                                                choice = Console.ReadLine(); // ACCEPTS USER INPUT
+                                                choice = choice.Trim(); // TRIMS WHITE SPACE
+                                                Console.WriteLine(" ");
+                                                foreach (char c in choice)
+                                                {
+                                                    char.ToLower(c);
+                                                }
                                             }
-                                            // CALCULATES REMAINING AP
-                                            Player1.AP = Player1.AP - atkCost;
-                                            atkCount++;
                                         }
                                         else
                                         {
-                                            Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
+                                            Console.WriteLine("INSUFFICIENT ACTION POINTS!");
                                             Console.WriteLine(" ");
-                                            Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
-                                            Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
+                                            Console.WriteLine(Player1.Name + " HP: " + Player1.HP);
+                                            Console.WriteLine("REMAINING AP: " + Player1.AP);
 
                                             Console.WriteLine(" ");
                                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
@@ -905,44 +1001,67 @@ namespace CombatSystem
                                     // IF PLAYER CHOOSES TO DEFEND
                                     else if (choice == "d")
                                     {
-                                        Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
-                                        Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
-                                        Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
-                                        Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
-                                        Console.WriteLine(" ");
-                                        Player1.AP = Player1.AP - defCost;
-                                        choice = "e";
-                                        break;
+                                        if (Player1.AP >= defCost)
+                                        {
+                                            Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
+                                            Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
+                                            Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
+                                            Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
+                                            Console.WriteLine(" ");
+                                            Player1.AP = Player1.AP - defCost;
+                                            choice = "e";
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine("INSUFFICIENT ACTION POINTS!");
+                                            Console.WriteLine(" ");
+                                            Console.WriteLine(Player1.Name + " HP: " + Player1.HP);
+                                            Console.WriteLine("REMAINING AP: " + Player1.AP);
+
+                                            Console.WriteLine(" ");
+                                            Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                                            choice = Console.ReadLine(); // ACCEPTS USER INPUT
+                                            choice = choice.Trim(); // TRIMS WHITE SPACE
+                                            Console.WriteLine(" ");
+                                            foreach (char c in choice)
+                                            {
+                                                char.ToLower(c);
+                                            }
+                                        }
                                     }
                                     // IF PLAYER CHOOSES TO HEAL
                                     else if (choice == "h")
                                     {
-                                        if (Player1.Pots > 0)
+                                        if (Player1.AP >= healCost)
                                         {
-                                            if (healCount < 1)
+                                            if (Player1.Pots > 0)
                                             {
-                                                healAmount = usePotion(Player1.HP, Player1.MaxHP);
-                                                Player1.HP = Player1.HP + healAmount;
-                                                if (Player1.HP > Player1.MaxHP)
+                                                if (healCount < 1)
                                                 {
-                                                    Player1.HP = Player1.MaxHP;
+                                                    healAmount = usePotion(Player1.HP, Player1.MaxHP);
+                                                    Player1.HP = Player1.HP + healAmount;
+                                                    if (Player1.HP > Player1.MaxHP)
+                                                    {
+                                                        Player1.HP = Player1.MaxHP;
+                                                    }
+                                                    Player1.Pots = Player1.Pots - 1;
+                                                    Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
+                                                    Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
+                                                    Console.WriteLine(" ");
+                                                    Player1.AP = Player1.AP - healCost;
+                                                    healCount++;
                                                 }
-                                                Player1.Pots = Player1.Pots - 1;
-                                                Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
-                                                Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
-                                                Console.WriteLine(" ");
-                                                Player1.AP = Player1.AP - healCost;
-                                                healCount++;
+                                                else
+                                                {
+                                                    Console.WriteLine("YOU CAN ONLY HEAL ONCE PER ROUND!");
+                                                }
                                             }
                                             else
                                             {
-                                                Console.WriteLine("YOU CAN ONLY HEAL ONCE PER ROUND!");
+                                                Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
+                                                Player1.AP = Player1.AP - (healCost / 2);
                                             }
-                                        }
-                                        else
-                                        {
-                                            Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
-                                            Player1.AP = Player1.AP - (healCost / 2);
                                         }
                                     }
                                     else
@@ -1055,7 +1174,7 @@ namespace CombatSystem
                 Console.WriteLine(msg);
             }
 
-            static void showStats(string targetName, int hp, int mp, int ap, int atk, int def, int con, int str, int dex, int intel, int wis)
+            static void showStats(string targetName, int hp, int mp, int ap, int atk, int def, int con, int str, int dex, int intel, int wis, string weapon)
             {
                 Console.WriteLine(targetName + " STATS:");
                 Console.WriteLine("-----------------------");
@@ -1070,6 +1189,8 @@ namespace CombatSystem
                 Console.WriteLine("DEX: " + dex);
                 Console.WriteLine("INT: " + intel);
                 Console.WriteLine("WIS: " + wis);
+                Console.WriteLine(" ");
+                Console.WriteLine("WEAPON: " + weapon);
                 Console.WriteLine("-----------------------");
                 Console.WriteLine(" ");
             }
@@ -1091,7 +1212,7 @@ namespace CombatSystem
 
             static int getDamage(int atk, int weaponDmg, int targetDef)
             {
-                int damage = diceRoll(2, 6) + (weaponDmg + atk / 7);
+                int damage = diceRoll(2, 6) + (weaponDmg + atk / 3);
                 int totalDmg = damage - (targetDef / 5);
                 return totalDmg;
             }
@@ -1103,6 +1224,20 @@ namespace CombatSystem
                 damage = rand.Next(minDmg, maxDmg);
 
                 return damage;
+            }
+
+            int getAtkCost(int weaponAtkCost)
+            {
+                int atkCost = weaponAtkCost;
+
+                return atkCost;
+            }
+
+            static int getEnemyWeapon()
+            {
+                int weapon = diceRoll(1, 5);
+                
+                return weapon;
             }
 
             static int diceRoll(int dice, int sides)
@@ -1134,6 +1269,22 @@ namespace CombatSystem
             {
                 int ac = (con / 2) + (dex / 4) + (str / 4);
                 return ac;
+            }
+
+            static int apRegen(int ap, int maxAP, int dex, int intel)
+            {
+                int regen = (dex / 4) + (intel / 3) + diceRoll(1, 6);
+                
+                if (ap < maxAP)
+                {
+                    ap = ap + regen;
+                }
+                if (ap > maxAP)
+                {
+                    ap = maxAP;
+                }
+
+                return ap;
             }
 
             static string getStatus(int hp, int maxHP)
