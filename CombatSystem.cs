@@ -71,6 +71,7 @@ namespace CombatSystem
             int ai_intel = 5;
             int ai_wis = 5;
             int ai_pots = 2;
+            
 
             // INITIALIZES WEAPONS
             Fists Fists = new Fists();
@@ -204,7 +205,6 @@ namespace CombatSystem
             }
             Console.WriteLine(" ");
             Console.WriteLine("GENERATING AI PLAYER...");
-            Console.WriteLine(" ");
 
             NPC AIPlayer = new NPC(); // CREATES AI GAME OBJ
 
@@ -212,7 +212,8 @@ namespace CombatSystem
             string npcName = "Enemy"; 
             AIPlayer.Name = npcName;
 
-            Console.WriteLine("SIMULATING DICE ROLLS FOR " + AIPlayer.Name + " STATS...");
+            Console.WriteLine("--- SIMULATING DICE ROLLS FOR " + AIPlayer.Name + " STATS...");
+            Console.WriteLine("");
 
             // SETS AI STATS
             ai_con = getStats(2, 8);
@@ -386,13 +387,16 @@ namespace CombatSystem
                     // IF INIT ROLL ENDS IN DRAW
                     if (Player1.Init == AIPlayer.Init)
                     {
-                        Console.WriteLine("INITIATIVE ROLL DRAW! RE-ROLLING INITIATIVE... ");
-                        Console.WriteLine(" ");
-                        Player1.Init = diceRoll(1, 20);
-                        Console.WriteLine("--- " + Player1.Name + " rolled " + Player1.Init);
-                        AIPlayer.Init = diceRoll(1, 20);
-                        Console.WriteLine("--- " + AIPlayer.Name + " rolled " + AIPlayer.Init);
-                        Console.WriteLine(" ");
+                        while (Player1.Init == AIPlayer.Init)
+                        {
+                            Console.WriteLine("INITIATIVE ROLL DRAW! RE-ROLLING INITIATIVE... ");
+                            Console.WriteLine(" ");
+                            Player1.Init = diceRoll(1, 20);
+                            Console.WriteLine("--- " + Player1.Name + " rolled " + Player1.Init);
+                            AIPlayer.Init = diceRoll(1, 20);
+                            Console.WriteLine("--- " + AIPlayer.Name + " rolled " + AIPlayer.Init);
+                            Console.WriteLine(" ");
+                        }
                     }
 
                     // -------------------------------- [ IF PLAYER WINS INIT ROLL ] -----------------------------------------------------------------------------------------
@@ -458,7 +462,7 @@ namespace CombatSystem
                                             if (atkCount < 1)
                                             {
                                                 // HIT ROLL
-                                                Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
+                                                Console.WriteLine("YOU ROLL FOR HIT...");
                                                 hitRoll = rollHit();
                                                 Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
 
@@ -476,7 +480,7 @@ namespace CombatSystem
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
+                                                    Console.WriteLine("--- " + "YOUR ATTACK MISSES!");
                                                     Console.WriteLine(" ");
                                                 }
                                                 // CALCULATES REMAINING AP
@@ -489,16 +493,6 @@ namespace CombatSystem
                                                 Console.WriteLine(" ");
                                                 Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
                                                 Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
-
-                                                Console.WriteLine(" ");
-                                                Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
-                                                choice = Console.ReadLine(); // ACCEPTS USER INPUT
-                                                choice = choice.Trim(); // TRIMS WHITE SPACE
-                                                Console.WriteLine(" ");
-                                                foreach (char c in choice)
-                                                {
-                                                    char.ToLower(c);
-                                                }
                                             }
                                         }
                                         else
@@ -525,7 +519,7 @@ namespace CombatSystem
                                         if (Player1.AP >= defCost)
                                         {
                                             Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
-                                            Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
+                                            Console.WriteLine("--- " + "YOU RAISE YOUR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
                                             Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
                                             Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
                                             Console.WriteLine(" ");
@@ -567,7 +561,7 @@ namespace CombatSystem
                                                         Player1.HP = Player1.MaxHP;
                                                     }
                                                     Player1.Pots = Player1.Pots - 1;
-                                                    Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
+                                                    Console.WriteLine("--- " + "YOU DRINK A POTION FROM YOUR BELT, HEALING " + healAmount + " HP!");
                                                     Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
                                                     Console.WriteLine(" ");
                                                     Player1.AP = Player1.AP - healCost;
@@ -580,7 +574,7 @@ namespace CombatSystem
                                             }
                                             else
                                             {
-                                                Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
+                                                Console.WriteLine("YOU REACH FOR A POTION, BUT FIND YOUR BELT EMPTY!");
                                                 Player1.AP = Player1.AP - (healCost / 2);
                                             }
                                         }
@@ -636,6 +630,9 @@ namespace CombatSystem
                             // RESETS ATK AND HEAL COUNTER AT THE BEGINNING OF EACH TURN
                             atkCount = 0;
                             healCount = 0;
+
+                            // DETERMINES atkCost BASED ON THE EQUIPPED WEAPON
+                            atkCost = getAtkCost(AIPlayer.AtkCost);
 
                             // IF AP IS NOT FULL, REGENS PER TURN
                             AIPlayer.AP = apRegen(AIPlayer.AP, AIPlayer.MaxAP, AIPlayer.DEX, AIPlayer.INTEL);
@@ -747,10 +744,12 @@ namespace CombatSystem
                         Player1.Alive = isAlive(Player1.HP);
                         if (AIPlayer.Alive == false)
                         {
+                            Player1.Score++;
                             Console.WriteLine("Congratulations, " + Player1.Name + "! You win!");
                         }
                         else
                         {
+                            AIPlayer.Score++;
                             Console.WriteLine(AIPlayer.Name + " wins!");
                         }
                     }
@@ -782,6 +781,9 @@ namespace CombatSystem
                             // RESETS ATK AND HEAL COUNTER AT THE BEGINNING OF EACH TURN
                             atkCount = 0;
                             healCount = 0;
+
+                            // DETERMINES atkCost BASED ON THE EQUIPPED WEAPON
+                            atkCost = getAtkCost(AIPlayer.AtkCost);
 
                             // IF AP IS NOT FULL, REGENS PER TURN
                             AIPlayer.AP = apRegen(AIPlayer.AP, AIPlayer.MaxAP, AIPlayer.DEX, AIPlayer.INTEL);
@@ -907,6 +909,9 @@ namespace CombatSystem
                             atkCount = 0;
                             healCount = 0;
 
+                            // DETERMINES atkCost BASED ON THE EQUIPPED WEAPON
+                            atkCost = getAtkCost(Player1.AtkCost);
+
                             // IF AP IS NOT FULL, REGENS PER TURN
                             Player1.AP = apRegen(Player1.AP, Player1.MaxAP, Player1.DEX, Player1.INTEL);
 
@@ -937,7 +942,7 @@ namespace CombatSystem
                                             if (atkCount < 1)
                                             {
                                                 // HIT ROLL
-                                                Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
+                                                Console.WriteLine("YOU ROLL FOR HIT...");
                                                 hitRoll = rollHit();
                                                 Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
 
@@ -955,7 +960,7 @@ namespace CombatSystem
                                                 }
                                                 else
                                                 {
-                                                    Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
+                                                    Console.WriteLine("--- " + "YOUR ATTACK MISSES!");
                                                     Console.WriteLine(" ");
                                                 }
                                                 // CALCULATES REMAINING AP
@@ -968,16 +973,6 @@ namespace CombatSystem
                                                 Console.WriteLine(" ");
                                                 Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
                                                 Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
-
-                                                Console.WriteLine(" ");
-                                                Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
-                                                choice = Console.ReadLine(); // ACCEPTS USER INPUT
-                                                choice = choice.Trim(); // TRIMS WHITE SPACE
-                                                Console.WriteLine(" ");
-                                                foreach (char c in choice)
-                                                {
-                                                    char.ToLower(c);
-                                                }
                                             }
                                         }
                                         else
@@ -1004,7 +999,7 @@ namespace CombatSystem
                                         if (Player1.AP >= defCost)
                                         {
                                             Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
-                                            Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
+                                            Console.WriteLine("--- " + "YOU RAISE YOUR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
                                             Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
                                             Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
                                             Console.WriteLine(" ");
@@ -1046,7 +1041,7 @@ namespace CombatSystem
                                                         Player1.HP = Player1.MaxHP;
                                                     }
                                                     Player1.Pots = Player1.Pots - 1;
-                                                    Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
+                                                    Console.WriteLine("--- " + "YOU DRINK A POTION FROM YOUR BELT, HEALING " + healAmount + " HP!");
                                                     Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
                                                     Console.WriteLine(" ");
                                                     Player1.AP = Player1.AP - healCost;
@@ -1059,7 +1054,7 @@ namespace CombatSystem
                                             }
                                             else
                                             {
-                                                Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
+                                                Console.WriteLine("YOU REACH FOR A POTION, BUT FIND YOUR BELT EMPTY!");
                                                 Player1.AP = Player1.AP - (healCost / 2);
                                             }
                                         }
@@ -1102,16 +1097,24 @@ namespace CombatSystem
                             }
                             Console.WriteLine(Player1.Name + "'s TURN ENDS...");
                             Console.WriteLine(" ");
+
                         }
                         if (Player1.Alive == true && AIPlayer.Alive == false)
                         {
+                            Player1.Score++;
                             Console.WriteLine("Congratulations, " + Player1.Name + "! You win!");
                         }
                         else if (Player1.Alive == false && AIPlayer.Alive == true)
                         {
+                            AIPlayer.Score++;
                             Console.WriteLine("YOU LOSE!");
+                            Console.WriteLine("");
                         }
                     }
+                    Console.WriteLine("-----------------------------------------");
+                    Console.WriteLine(Player1.Name + " SCORE: " + Player1.Score + "\t"+ AIPlayer.Name + " SCORE: " + AIPlayer.Score);
+                    Console.WriteLine("-----------------------------------------");
+                    Console.WriteLine("");
                     Console.Write("PLAY AGAIN? YES (Y) OR NO (N)? ");
                     choice = Console.ReadLine();
                     choice = choice.Trim();
@@ -1169,7 +1172,7 @@ namespace CombatSystem
                 "but since the DUEL dev team is just me, I wouldn't expect them to be all that regular. I hope you enjoy the game!\n\n" +
                 "o7\n\n" +
                 "Regards,\n" +
-                "// Blaqkstar //\n\n\n";
+                "Blaqkstar\n\n\n";
 
                 Console.WriteLine(msg);
             }
@@ -1273,7 +1276,7 @@ namespace CombatSystem
 
             static int apRegen(int ap, int maxAP, int dex, int intel)
             {
-                int regen = (dex / 4) + (intel / 3) + diceRoll(1, 6);
+                int regen = (dex / 5) + (intel / 5) + diceRoll(1, 6);
                 
                 if (ap < maxAP)
                 {
@@ -1371,7 +1374,7 @@ namespace CombatSystem
             
 
 
-            // AI BEHAVIORAL ALGORITHM STARTS HERE
+            // ===================================================>>> AI BEHAVIORAL ALGORITHM STARTS HERE
             static string aiChoice(int aiHP, int aiMaxHP, int aiATK, int aiATKCount, int aiDEF, int aiMP, int aiAP, int aiPots,
                                int aiHealCount, int playerHP, int playerMaxHP, int playerATK, int playerDEF, int playerMP, int atkCost, int defCost, int healCost)
             {
@@ -1394,20 +1397,20 @@ namespace CombatSystem
                             if (aiATK > playerDEF)
                             {
                                 // IF AI HAS NOT YET ATTACKED
-                                if (aiATKCount < 1)
+                                if (aiATKCount < 1 && aiAP >= atkCost)
                                 {
                                     atkWeight++;
                                 }
                                 // IF AI HAS ALREADY ATTACKED
-                                else if (aiATKCount > 0)
+                                else if (aiATKCount > 0 || aiAP < atkCost)
                                 {
                                     // AI HAS NOT YET HEALED
-                                    if (aiHealCount < 1)
+                                    if (aiHealCount < 1 && aiPots > 0)
                                     {
                                         healWeight++;
                                     }
                                     // IF AI HAS ALREADY HEALED
-                                    else if (aiHealCount > 0)
+                                    else if (aiHealCount > 0 || aiPots < 1)
                                     {
                                         defWeight++;
                                     }
@@ -1417,20 +1420,20 @@ namespace CombatSystem
                             else if (aiATK <= playerDEF)
                             {
                                 // IF AI HAS NOT YET HEALED
-                                if (aiHealCount < 1)
+                                if (aiHealCount < 1 && aiPots > 0)
                                 {
                                     healWeight++;
                                 }
                                 // IF AI HAS ALREADY HEALED
-                                else if (aiHealCount > 0)
+                                else if (aiHealCount > 0 || aiPots < 1)
                                 {
                                     // IF AI CAN ATTACK
-                                    if (aiATKCount < 1)
+                                    if (aiATKCount < 1 && aiAP >= atkCost)
                                     {
                                         atkWeight++;
                                     }
                                     // IF AI CANNOT ATTACK
-                                    else if (aiATKCount > 0)
+                                    else if (aiATKCount > 0 || aiAP < atkCost)
                                     {
                                         defWeight++;
                                     }
@@ -1441,20 +1444,20 @@ namespace CombatSystem
                         else if (aiHP < playerHP)
                         {
                             // IF AI HAS NOT YET HEALED
-                            if (aiHealCount < 1)
+                            if (aiHealCount < 1 && aiPots > 0)
                             {
                                 healWeight++;
                             }
                             // IF AI HAS ALREADY HEALED
-                            else if (aiHealCount > 0)
+                            else if (aiHealCount > 0 || aiPots < 1)
                             {
                                 // IF AI CAN ATTACK
-                                if (aiATKCount < 1)
+                                if (aiATKCount < 1 && aiAP >= atkCost)
                                 {
                                     atkWeight++;
                                 }
                                 // IF AI CANNOT ATTACK
-                                else if (aiATKCount > 0)
+                                else if (aiATKCount > 0 || aiAP < atkCost)
                                 {
                                     defWeight++;
                                 }
@@ -1468,23 +1471,23 @@ namespace CombatSystem
                         if (aiHP >= playerHP)
                         {
                             // IF AI CAN HEAL
-                            if (aiHealCount < 1)
+                            if (aiHealCount < 1 && aiPots > 0)
                             {
                                 healWeight++;
                             }
                             // IF AI CANNOT HEAL
-                            else if (aiHealCount > 0)
+                            else if (aiHealCount > 0 || aiPots < 1)
                             {
                                 // FAVORS OFFENSE IF AI DEF IS GREATER THAN PLAYER ATK
                                 if (aiDEF > playerATK)
                                 {
                                     // IF AI CAN ATTACK
-                                    if (aiATKCount < 1)
+                                    if (aiATKCount < 1 && aiAP >= atkCost)
                                     {
                                         atkWeight++;
                                     }
                                     // IF AI CANNOT ATTACK
-                                    else if (aiATKCount > 0)
+                                    else if (aiATKCount > 0 || aiAP < atkCost)
                                     {
                                         defWeight++;
                                     }
@@ -1493,12 +1496,12 @@ namespace CombatSystem
                                 else if (aiDEF <= playerATK)
                                 {
                                     // IF AI CAN ATTACK
-                                    if (aiATKCount < 1)
+                                    if (aiATKCount < 1 && aiAP >= atkCost)
                                     {
                                         atkWeight++;
                                     }
                                     // IF AI CANNOT ATTACK
-                                    else if (aiATKCount > 0)
+                                    else if (aiATKCount > 0 || aiAP < atkCost)
                                     {
                                         defWeight++;
                                     }
@@ -1509,23 +1512,23 @@ namespace CombatSystem
                         else if (aiHP < (playerHP / 2))
                         {
                             // IF AI CAN HEAL
-                            if (aiHealCount < 1)
+                            if (aiHealCount < 1 && aiAP >= atkCost)
                             {
                                 healWeight++;
                             }
                             // IF AI CANNOT HEAL
-                            else if (aiHealCount > 0)
+                            else if (aiHealCount > 0 || aiAP < atkCost)
                             {
                                 // IF AI DEF IS GREATER THAN PLAYER ATK
                                 if (aiDEF > playerATK)
                                 {
                                     // IF AI CAN ATTACK
-                                    if (aiATKCount < 1)
+                                    if (aiATKCount < 1 && aiAP >= atkCost)
                                     {
                                         atkWeight++;
                                     }
                                     // IF AI CANNOT ATTACK
-                                    else if (aiATKCount > 0)
+                                    else if (aiATKCount > 0 || aiAP < atkCost)
                                     {
                                         defWeight++;
                                     }
@@ -1537,12 +1540,12 @@ namespace CombatSystem
                     if (aiHP >= (aiMaxHP / 2) && aiHP < aiMaxHP)
                     {
                         // IF AI CAN ATTACK
-                        if (aiATKCount < 1)
+                        if (aiATKCount < 1 && aiAP >= atkCost)
                         {
                             atkWeight++;
                         }
                         // IF AI CANNOT ATTACK
-                        else if (aiATKCount > 0)
+                        else if (aiATKCount > 0 || aiAP < atkCost)
                         {
                             defWeight++;
                         }
@@ -1551,12 +1554,12 @@ namespace CombatSystem
                     if (aiAP == aiMaxHP)
                     {
                         // IF AI CAN ATTACK
-                        if (aiATKCount < 1)
+                        if (aiATKCount < 1 && aiAP >= atkCost)
                         {
                             atkWeight++;
                         }
                         // IF AI CANNOT ATTACK
-                        else if (aiATKCount > 0)
+                        else if (aiATKCount > 0 || aiAP < atkCost)
                         {
                             defWeight++;
                         }

@@ -31,6 +31,7 @@ namespace Combat_System
         private int wis = 5;
         private int init = 0;
         private int pots = 2;
+        private int score = 0;
         private string name = "UNDEFINED";
 
         // properties
@@ -164,6 +165,12 @@ namespace Combat_System
         {
             get { return pots; }
             set { pots = value; }
+        }
+
+        public int Score
+        {
+            get { return score; }
+            set { score = value; }
         }
 
         public string Name
