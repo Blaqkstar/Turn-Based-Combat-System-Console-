@@ -10,9 +10,9 @@ namespace CombatSystem
         static void Main(string[] args)
         {
             // ABILITY AP COST
-            int atkCost = 5;
-            int defCost = 3;
-            int healCost = 5;
+            int atkCost = 3;
+            int defCost = 2;
+            int healCost = 4;
 
             // INPUT ERROR MESSAGE
             string invalid = "Invalid entry.";
@@ -82,7 +82,7 @@ namespace CombatSystem
             showLogo(); // GAME TITLE HEADER
             Console.WriteLine("//==================================================================================//\n\n");
             showWelcomeMsg(); // WELCOME BLURB
-
+            Thread.Sleep(333);
             Console.Write("ENTER YOUR NAME: ");
             string userName = Console.ReadLine(); // ACCEPTS USER INPUT
             Player1.Name = userName;
@@ -90,8 +90,9 @@ namespace CombatSystem
             Console.WriteLine(" ");
             Console.WriteLine("Greetings, " + Player1.Name + "!");
             Console.WriteLine(" ");
+            Thread.Sleep(333);
             Console.WriteLine("GENERATING CHARACTER STATS...");
-            Console.WriteLine(" ");
+            Thread.Sleep(333);
 
             // SETS PLAYER STATS
             con = getStats(2, 8);
@@ -105,6 +106,10 @@ namespace CombatSystem
             wis = getStats(2, 6);
             Player1.WIS = wis;
 
+            Console.WriteLine("CALCULATING ATTRIBUTES...");
+            Thread.Sleep(333);
+            Console.WriteLine(" ");
+
             // PLAYER ATTRIBUTE CALCS
             Player1.MaxHP = calcAttribute(con, 0);
             Player1.MaxMP = calcAttribute(intel, 0);
@@ -117,6 +122,8 @@ namespace CombatSystem
 
             // DISPLAYS STATS
             showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS);
+
+            Thread.Sleep(333);
 
             Console.Write("WOULD YOU LIKE TO CONTINUE (C) OR RE-ROLL (R)? "); // USER INPUT PROMPT
             choice = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -160,8 +167,11 @@ namespace CombatSystem
                         Player1.MP = Player1.MaxMP;
                         Player1.AP = Player1.MaxAP;
 
+                        Thread.Sleep(333);
                         // DISPLAYS PLAYER STATS
                         showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS);
+
+                        Thread.Sleep(333);
 
                         Console.Write("WOULD YOU LIKE TO CONTINUE (C) OR RE-ROLL (R)? "); // USER INPUT PROMPT
                         choice = Console.ReadLine(); // ACCEPTS USER INPUT
@@ -191,15 +201,15 @@ namespace CombatSystem
 
             }
             Console.WriteLine(" ");
+            Thread.Sleep(333);
             Console.WriteLine("GENERATING AI PLAYER...");
-            Console.WriteLine(" ");
 
             NPC AIPlayer = new NPC(); // CREATES AI GAME OBJ
 
             // SETS AI NAME
-            string npcName = "Enemy"; 
+            string npcName = "Adversary"; 
             AIPlayer.Name = npcName;
-
+            Thread.Sleep(333);
             Console.WriteLine("SIMULATING DICE ROLLS FOR " + AIPlayer.Name + " STATS...");
 
             // SETS AI STATS
@@ -214,6 +224,10 @@ namespace CombatSystem
             ai_wis = getStats(2, 6);
             AIPlayer.WIS = ai_wis;
 
+            Thread.Sleep(333);
+            Console.WriteLine("CALCULATING " + AIPlayer.Name + " ATTRIBUTES...");
+            Console.WriteLine(" ");
+
             // AI ATTRIBUTE CALCS
             AIPlayer.MaxHP = calcAttribute(ai_con, 0);
             AIPlayer.MaxMP = calcAttribute(ai_intel, 0);
@@ -224,6 +238,7 @@ namespace CombatSystem
             AIPlayer.MP = AIPlayer.MaxMP;
             AIPlayer.AP = AIPlayer.MaxAP;
 
+            Thread.Sleep(333);
             // DISPLAYS AI STATS
             showStats(AIPlayer.Name, AIPlayer.HP, AIPlayer.MP, AIPlayer.AP, AIPlayer.ATK, AIPlayer.DEF, AIPlayer.CON, AIPlayer.STR, AIPlayer.DEX, AIPlayer.INTEL, AIPlayer.WIS);
 
@@ -241,6 +256,7 @@ namespace CombatSystem
 
             // WEAPON CHOICE DIALOG
             showWeapons();
+            Thread.Sleep(333);
             Console.Write("CHOOSE YOUR WEAPON: ");
             choice = Console.ReadLine();
             int.TryParse(choice, out choice2);
@@ -253,6 +269,7 @@ namespace CombatSystem
                     Console.WriteLine(invalid);
                     Console.WriteLine("");
                     showWeapons();
+                    Thread.Sleep(333);
                     Console.Write("CHOOSE YOUR WEAPON: ");
                     choice = Console.ReadLine();
                     int.TryParse(choice, out choice2);
@@ -288,6 +305,7 @@ namespace CombatSystem
             }
             Console.WriteLine("YOU'VE EQUIPPED YOUR " + Player1.WeaponName);
             Console.WriteLine("");
+            Thread.Sleep(333);
 
             // -------------------------------- [ COMBAT START DIALOG ] -----------------------------------------------------------------------------------------
 
@@ -329,26 +347,34 @@ namespace CombatSystem
                     // INITIALIZES BOTH FIGHTERS AS ALIVE
                     Player1.Alive = true;
                     AIPlayer.Alive = true;
-
+                    Thread.Sleep(333);
                     Console.WriteLine("< < < BEGINNING COMBAT SEQUENCE > > >");
                     Console.WriteLine(" ");
+                    Thread.Sleep(333);
                     Console.WriteLine("ROLLING INITIATIVE...");
                     Player1.Init = diceRoll(1, 20);
+                    Thread.Sleep(333);
                     Console.WriteLine("--- " + Player1.Name + " rolled " + Player1.Init);
                     AIPlayer.Init = diceRoll(1, 20);
+                    Thread.Sleep(333);
                     Console.WriteLine("--- " + AIPlayer.Name + " rolled " + AIPlayer.Init);
                     Console.WriteLine(" ");
+                    Thread.Sleep(500);
 
                     // IF INIT ROLL ENDS IN DRAW
                     if (Player1.Init == AIPlayer.Init)
                     {
+                        Thread.Sleep(333);
                         Console.WriteLine("INITIATIVE ROLL DRAW! RE-ROLLING INITIATIVE... ");
                         Console.WriteLine(" ");
                         Player1.Init = diceRoll(1, 20);
+                        Thread.Sleep(333);
                         Console.WriteLine("--- " + Player1.Name + " rolled " + Player1.Init);
                         AIPlayer.Init = diceRoll(1, 20);
+                        Thread.Sleep(333);
                         Console.WriteLine("--- " + AIPlayer.Name + " rolled " + AIPlayer.Init);
                         Console.WriteLine(" ");
+                        Thread.Sleep(333);
                     }
 
                     // -------------------------------- [ IF PLAYER WINS INIT ROLL ] -----------------------------------------------------------------------------------------
@@ -363,6 +389,7 @@ namespace CombatSystem
                         origAIDef = AIPlayer.DEF; // HOLDS AI ORIGINAL DEF VALUE
 
                         Console.WriteLine(Player1.Name + " GOES FIRST... ");
+                        Thread.Sleep(500);
                         Console.WriteLine(" ");
 
                         // THIS LOOP CONTAINS PLAYER AND AI TURNS
@@ -395,9 +422,12 @@ namespace CombatSystem
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
                             Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
+                            Thread.Sleep(333);
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                            Thread.Sleep(333);
                             Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
+                            Thread.Sleep(333);
                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                             choice = choice.Trim(); // TRIMS WHITE SPACE
@@ -419,6 +449,7 @@ namespace CombatSystem
                                             Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
                                             hitRoll = rollHit();
                                             Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
+                                            Thread.Sleep(333);
 
                                             // IF SUCCESSFUL
                                             if (hitRoll >= AIPlayer.DEF)
@@ -428,6 +459,7 @@ namespace CombatSystem
                                                 AIPlayer.HP = AIPlayer.HP - damage;
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
                                                 AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
 
                                                 Console.WriteLine(" ");
@@ -436,6 +468,8 @@ namespace CombatSystem
                                             {
                                                 Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
                                                 Console.WriteLine(" ");
+                                                Thread.Sleep(333);
+                                                Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                                             }
                                             // CALCULATES REMAINING AP
                                             Player1.AP = Player1.AP - atkCost;
@@ -445,10 +479,13 @@ namespace CombatSystem
                                         {
                                             Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                                            Thread.Sleep(333);
                                             Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
 
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                                             choice = choice.Trim(); // TRIMS WHITE SPACE
@@ -464,8 +501,11 @@ namespace CombatSystem
                                     {
                                         Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
                                         Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
+                                        Thread.Sleep(333);
                                         Console.WriteLine(" ");
                                         Player1.AP = Player1.AP - defCost;
                                         choice = "e";
@@ -486,7 +526,9 @@ namespace CombatSystem
                                                 }
                                                 Player1.Pots = Player1.Pots - 1;
                                                 Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
+                                                Thread.Sleep(333);
                                                 Console.WriteLine(" ");
                                                 Player1.AP = Player1.AP - healCost;
                                                 healCount++;
@@ -517,7 +559,9 @@ namespace CombatSystem
 
                                     // DISPLAYS PLAYER AND AI REMAINING HP
                                     Console.WriteLine("----------");
+                                    Thread.Sleep(333);
                                     showStat(Player1.Name, "HP", Player1.HP);
+                                    Thread.Sleep(333);
                                     Console.WriteLine("----------");
                                     Console.WriteLine(" ");
 
@@ -540,6 +584,7 @@ namespace CombatSystem
                             }
                             Console.WriteLine(Player1.Name + "'s TURN ENDS...");
                             Console.WriteLine(" ");
+                            Thread.Sleep(333);
 
                             // -------------------------------- [ AI TURN START ]
 
@@ -568,6 +613,7 @@ namespace CombatSystem
 
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
+                            Thread.Sleep(333);
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
 
                             while (AIPlayer.AP >= defCost)
@@ -582,9 +628,12 @@ namespace CombatSystem
                                     if (atkCount < 1)
                                     {
                                         // HIT ROLL
+                                        Thread.Sleep(333);
                                         Console.WriteLine(AIPlayer.Name + " ROLLS FOR HIT...");
                                         hitRoll = rollHit();
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + AIPlayer.Name + " ROLLED " + hitRoll);
+                                        Thread.Sleep(333);
 
                                         // IF SUCCESSFUL
                                         if (hitRoll >= Player1.DEF)
@@ -593,11 +642,13 @@ namespace CombatSystem
                                             Player1.HP = Player1.HP - damage;
                                             Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE!");
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                         }
                                         else
                                         {
                                             Console.WriteLine("--- " + AIPlayer.Name + "'s ATTACK MISSES!");
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                         }
                                         // CALCULATES REMAINING AP
                                         AIPlayer.AP = AIPlayer.AP - atkCost;
@@ -614,9 +665,12 @@ namespace CombatSystem
                                 {
                                     AIPlayer.DEF = AIPlayer.DEF + useDefend(AIPlayer.DEF);
                                     Console.WriteLine("--- " + AIPlayer.Name + " RAISES THEIR SHIELD, PREPARING FOR " + Player1.Name + "'s NEXT ATTACK!");
+                                    Thread.Sleep(333);
                                     Console.WriteLine("--- DEFENSE INCREASES BY: " + (AIPlayer.DEF - origAIDef));
+                                    Thread.Sleep(333);
                                     Console.WriteLine("--- " + AIPlayer.Name + " DEFENSE: " + AIPlayer.DEF);
                                     Console.WriteLine(" ");
+                                    Thread.Sleep(333);
                                     AIPlayer.AP = AIPlayer.AP - defCost;
                                     aiTurn = "e";
                                     break;
@@ -629,11 +683,15 @@ namespace CombatSystem
                                         healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
                                         AIPlayer.HP = AIPlayer.HP + healAmount;
                                         AIPlayer.Pots = AIPlayer.Pots - 1;
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
                                         AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                                         Console.WriteLine(" ");
+                                        Thread.Sleep(333);
                                         AIPlayer.AP = AIPlayer.AP - healCost;
                                         healCount++;
                                     }
@@ -652,10 +710,13 @@ namespace CombatSystem
                             }
                             // DISPLAYS PLAYER AND AI REMAINING HP
                             Console.WriteLine("----------");
+                            Thread.Sleep(333);
                             showStat(Player1.Name, "HP", Player1.HP);
+                            Thread.Sleep(333);
                             Console.WriteLine("----------");
                             Console.WriteLine(" ");
                         }
+                        Thread.Sleep(333);
                         Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
                         Console.WriteLine(" ");
 
@@ -664,10 +725,12 @@ namespace CombatSystem
                         Player1.Alive = isAlive(Player1.HP);
                         if (AIPlayer.Alive == false)
                         {
+                            Thread.Sleep(333);
                             Console.WriteLine("Congratulations, " + Player1.Name + "! You win!");
                         }
                         else
                         {
+                            Thread.Sleep(333);
                             Console.WriteLine(AIPlayer.Name + " wins!");
                         }
                     }
@@ -684,6 +747,7 @@ namespace CombatSystem
 
                         Console.WriteLine(AIPlayer.Name + " GOES FIRST... ");
                         Console.WriteLine(" ");
+                        Thread.Sleep(500);
 
                         while (Player1.Alive == true && AIPlayer.Alive == true)
                         {
@@ -715,6 +779,7 @@ namespace CombatSystem
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
+                            Thread.Sleep(333);
 
                             while (AIPlayer.AP >= defCost)
                             {
@@ -730,6 +795,7 @@ namespace CombatSystem
                                         // HIT ROLL
                                         Console.WriteLine(AIPlayer.Name + " ROLLS FOR HIT...");
                                         hitRoll = rollHit();
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + AIPlayer.Name + " ROLLED " + hitRoll);
 
                                         // IF SUCCESSFUL
@@ -737,13 +803,17 @@ namespace CombatSystem
                                         {
                                             damage = getDamage(AIPlayer.ATK, AIPlayer.WeaponDMG, Player1.DEF);
                                             Player1.HP = Player1.HP - damage;
+                                            Thread.Sleep(333);
                                             Console.WriteLine("--- " + AIPlayer.Name + " HITS " + Player1.Name + " FOR " + damage + " DAMAGE!");
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                         }
                                         else
                                         {
+                                            Thread.Sleep(333);
                                             Console.WriteLine("--- " + AIPlayer.Name + "'s ATTACK MISSES!");
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                         }
                                         // CALCULATES REMAINING AP
                                         AIPlayer.AP = AIPlayer.AP - atkCost;
@@ -759,9 +829,13 @@ namespace CombatSystem
                                 else if (aiTurn == "d")
                                 {
                                     AIPlayer.DEF = AIPlayer.DEF + useDefend(AIPlayer.DEF);
+                                    Thread.Sleep(333);
                                     Console.WriteLine("--- " + AIPlayer.Name + " RAISES THEIR SHIELD, PREPARING FOR " + Player1.Name + "'s NEXT ATTACK!");
+                                    Thread.Sleep(333);
                                     Console.WriteLine("--- DEFENSE INCREASES BY: " + (AIPlayer.DEF - origAIDef));
+                                    Thread.Sleep(333);
                                     Console.WriteLine("--- " + AIPlayer.Name + " DEFENSE: " + AIPlayer.DEF);
+                                    Thread.Sleep(333);
                                     Console.WriteLine(" ");
                                     AIPlayer.AP = AIPlayer.AP - defCost;
                                     aiTurn = "e";
@@ -775,13 +849,18 @@ namespace CombatSystem
                                         healAmount = usePotion(AIPlayer.HP, AIPlayer.MaxHP);
                                         AIPlayer.HP = AIPlayer.HP + healAmount;
                                         AIPlayer.Pots = AIPlayer.Pots - 1;
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + AIPlayer.Name + " DRINKS A POTION FROM THEIR BELT!");
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- REMAINING POTIONS: " + AIPlayer.Pots);
+                                        Thread.Sleep(333);
                                         AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                                         Console.WriteLine(" ");
                                         AIPlayer.AP = AIPlayer.AP - healCost;
                                         healCount++;
+                                        Thread.Sleep(333);
                                     }
                                     else aiTurn = "d";
                                     break;
@@ -798,11 +877,15 @@ namespace CombatSystem
                             }
                             // DISPLAYS PLAYER AND AI REMAINING HP
                             Console.WriteLine("----------");
+                            Thread.Sleep(333);
                             showStat(Player1.Name, "HP", Player1.HP);
+                            Thread.Sleep(333);
                             Console.WriteLine("----------");
                             Console.WriteLine(" ");
+                            Thread.Sleep(333);
                             Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
                             Console.WriteLine(" ");
+                            Thread.Sleep(500);
 
                             // CHECKS TARGET STATUS AND EXITS LOOP IF TARGET IS NO LONGER ALIVE
                             Player1.Alive = isAlive(Player1.HP);
@@ -829,6 +912,7 @@ namespace CombatSystem
 
                             Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
+                            Thread.Sleep(333);
 
                             // IF AP IS NOT FULL, REGENS 4 PER TURN
                             if (Player1.AP < Player1.MaxAP)
@@ -839,9 +923,12 @@ namespace CombatSystem
                             {
                                 Player1.AP = Player1.MaxAP;
                             }
+                            Thread.Sleep(333);
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                            Thread.Sleep(333);
                             Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
+                            Thread.Sleep(333);
                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                             choice = choice.Trim(); // TRIMS WHITE SPACE
@@ -860,8 +947,10 @@ namespace CombatSystem
                                         if (atkCount < 1)
                                         {
                                             // HIT ROLL
+                                            Thread.Sleep(333);
                                             Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
                                             hitRoll = rollHit();
+                                            Thread.Sleep(333);
                                             Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
 
                                             // IF SUCCESSFUL
@@ -869,16 +958,20 @@ namespace CombatSystem
                                             {
                                                 damage = getDamage(Player1.ATK, Player1.WeaponDMG, AIPlayer.DEF);
                                                 AIPlayer.HP = AIPlayer.HP - damage;
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
                                                 AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
-
                                                 Console.WriteLine(" ");
+                                                Thread.Sleep(333);
                                             }
                                             else
                                             {
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
                                                 Console.WriteLine(" ");
+                                                Thread.Sleep(333);
                                             }
                                             // CALCULATES REMAINING AP
                                             Player1.AP = Player1.AP - atkCost;
@@ -886,12 +979,15 @@ namespace CombatSystem
                                         }
                                         else
                                         {
+                                            Thread.Sleep(333);
                                             Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
+                                            Thread.Sleep(333);
                                             Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
-
                                             Console.WriteLine(" ");
+                                            Thread.Sleep(333);
                                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                                             choice = choice.Trim(); // TRIMS WHITE SPACE
@@ -906,10 +1002,14 @@ namespace CombatSystem
                                     else if (choice == "d")
                                     {
                                         Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
+                                        Thread.Sleep(333);
                                         Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
                                         Console.WriteLine(" ");
+                                        Thread.Sleep(333);
                                         Player1.AP = Player1.AP - defCost;
                                         choice = "e";
                                         break;
@@ -928,21 +1028,28 @@ namespace CombatSystem
                                                     Player1.HP = Player1.MaxHP;
                                                 }
                                                 Player1.Pots = Player1.Pots - 1;
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
                                                 Console.WriteLine(" ");
+                                                Thread.Sleep(333);
                                                 Player1.AP = Player1.AP - healCost;
                                                 healCount++;
                                             }
                                             else
                                             {
+                                                Thread.Sleep(333);
                                                 Console.WriteLine("YOU CAN ONLY HEAL ONCE PER ROUND!");
+                                                Thread.Sleep(333);
                                             }
                                         }
                                         else
                                         {
+                                            Thread.Sleep(333);
                                             Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
                                             Player1.AP = Player1.AP - (healCost / 2);
+                                            Thread.Sleep(333);
                                         }
                                     }
                                     else
@@ -960,12 +1067,15 @@ namespace CombatSystem
 
                                     // DISPLAYS PLAYER AND AI REMAINING HP
                                     Console.WriteLine("----------");
+                                    Thread.Sleep(333);
                                     showStat(Player1.Name, "HP", Player1.HP);
+                                    Thread.Sleep(333);
                                     Console.WriteLine("----------");
                                     Console.WriteLine(" ");
 
                                     if (Player1.AP > 0)
                                     {
+                                        Thread.Sleep(333);
                                         Console.Write("YOU HAVE " + Player1.AP + " ACTION POINTS REMAINING. ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? ");
                                         choice = Console.ReadLine();
                                         Console.WriteLine(" ");
@@ -981,18 +1091,25 @@ namespace CombatSystem
                                     break;
                                 }
                             }
+                            Thread.Sleep(333);
                             Console.WriteLine(Player1.Name + "'s TURN ENDS...");
                             Console.WriteLine(" ");
+                            Thread.Sleep(500);
                         }
                         if (Player1.Alive == true && AIPlayer.Alive == false)
                         {
+                            Thread.Sleep(333);
                             Console.WriteLine("Congratulations, " + Player1.Name + "! You win!");
+                            Thread.Sleep(333);
                         }
                         else if (Player1.Alive == false && AIPlayer.Alive == true)
                         {
+                            Thread.Sleep(333);
                             Console.WriteLine("YOU LOSE!");
+                            Thread.Sleep(333);
                         }
                     }
+                    Thread.Sleep(333);
                     Console.Write("PLAY AGAIN? YES (Y) OR NO (N)? ");
                     choice = Console.ReadLine();
                     choice = choice.Trim();
@@ -1059,17 +1176,29 @@ namespace CombatSystem
             {
                 Console.WriteLine(targetName + " STATS:");
                 Console.WriteLine("-----------------------");
+                Thread.Sleep(333);
                 Console.WriteLine("HP: " + hp);
+                Thread.Sleep(333);
                 Console.WriteLine("MP: " + mp);
+                Thread.Sleep(333);
                 Console.WriteLine("AP: " + ap);
+                Thread.Sleep(333);
                 Console.WriteLine("ATK: " + atk);
+                Thread.Sleep(333);
                 Console.WriteLine("DEF: " + def);
+                Thread.Sleep(333);
                 Console.WriteLine(" ");
+                Thread.Sleep(333);
                 Console.WriteLine("CON: " + con);
+                Thread.Sleep(333);
                 Console.WriteLine("STR: " + str);
+                Thread.Sleep(333);
                 Console.WriteLine("DEX: " + dex);
+                Thread.Sleep(333);
                 Console.WriteLine("INT: " + intel);
+                Thread.Sleep(333);
                 Console.WriteLine("WIS: " + wis);
+                Thread.Sleep(333);
                 Console.WriteLine("-----------------------");
                 Console.WriteLine(" ");
             }
@@ -1147,7 +1276,7 @@ namespace CombatSystem
                 string dead = " IS DEAD.";
 
                 // ASSIGNS A STATUS BASED ON REMAINING HP
-                if (hp == maxHP)
+                if (hp >= maxHP)
                 {
                     status = healthy;
                 }
