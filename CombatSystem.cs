@@ -1,6 +1,7 @@
 ﻿using Combat_System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Threading;
 
 
 namespace CombatSystem
@@ -71,6 +72,8 @@ namespace CombatSystem
             int ai_intel = 5;
             int ai_wis = 5;
             int ai_pots = 2;
+
+            bool isRunning = false;
             
 
             string choice = "UNDEFINED"; // INITIALIZES VARIABLE TO HOLD PLAYER CHOICE
@@ -79,18 +82,27 @@ namespace CombatSystem
 
             Player Player1 = new Player(); // CREATES PLAYER GAME OBJ
 
-            showLogo(); // GAME TITLE HEADER
-            Console.WriteLine("//==================================================================================//\n\n");
-            showWelcomeMsg(); // WELCOME BLURB
+            showLogo(TimeSpan.FromSeconds(1.5)); // GAME TITLE HEADER
             Thread.Sleep(333);
-            Console.Write("ENTER YOUR NAME: ");
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.WriteLine("//==================================================================================//\n\n");
+            Console.ResetColor();
+            showWelcomeMsg(); // WELCOME BLURB
+            Console.WriteLine();
+            Thread.Sleep(333);
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Console.Write("WHAT IS YOUR NAME? ");
+            Console.ResetColor();
             string userName = Console.ReadLine(); // ACCEPTS USER INPUT
             Player1.Name = userName;
             Console.WriteLine(" ");
             Console.WriteLine(" ");
-            Console.WriteLine("Greetings, " + Player1.Name + "!");
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.WriteLine("GREETINGS, " + Player1.Name + "!");
+            Console.ResetColor();
             Console.WriteLine(" ");
             Thread.Sleep(333);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("GENERATING CHARACTER STATS...");
             Thread.Sleep(333);
 
@@ -122,10 +134,13 @@ namespace CombatSystem
 
             // DISPLAYS STATS
             showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS);
+            Console.ResetColor();
 
             Thread.Sleep(333);
 
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.Write("WOULD YOU LIKE TO CONTINUE (C) OR RE-ROLL (R)? "); // USER INPUT PROMPT
+            Console.ResetColor();
             choice = Console.ReadLine(); // ACCEPTS USER INPUT
             choice = choice.Trim(); // TRIMS WHITE SPACE
             foreach (char c in choice)
@@ -142,6 +157,7 @@ namespace CombatSystem
                     if (choice == "r")
                     {
                         Console.WriteLine(" ");
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine("RE-ROLLING CHARACTER STATS");
                         Console.WriteLine(" ");
 
@@ -170,10 +186,13 @@ namespace CombatSystem
                         Thread.Sleep(333);
                         // DISPLAYS PLAYER STATS
                         showStats(Player1.Name, Player1.HP, Player1.MP, Player1.AP, Player1.ATK, Player1.DEF, Player1.CON, Player1.STR, Player1.DEX, Player1.INTEL, Player1.WIS);
+                        Console.ResetColor();
 
                         Thread.Sleep(333);
 
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.Write("WOULD YOU LIKE TO CONTINUE (C) OR RE-ROLL (R)? "); // USER INPUT PROMPT
+                        Console.ResetColor();
                         choice = Console.ReadLine(); // ACCEPTS USER INPUT
                         choice = choice.Trim(); // TRIMS WHITE SPACE
                         foreach (char c in choice)
@@ -187,7 +206,9 @@ namespace CombatSystem
                     {
                         Console.WriteLine(invalid); // ERROR MESSAGE
                         Console.WriteLine(" ");
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.Write("WOULD YOU LIKE TO CONTINUE (C) OR RE-ROLL (R)? "); // USER INPUT PROMPT
+                        Console.ResetColor();
                         choice = Console.ReadLine(); // ACCEPTS USER INPUT
                         choice = choice.Trim(); // TRIMS WHITE SPACE
                         foreach (char c in choice)
@@ -202,7 +223,10 @@ namespace CombatSystem
             }
             Console.WriteLine(" ");
             Thread.Sleep(333);
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine("GENERATING AI PLAYER...");
+            Console.WriteLine();
+            Console.ResetColor();
 
             NPC AIPlayer = new NPC(); // CREATES AI GAME OBJ
 
@@ -210,6 +234,7 @@ namespace CombatSystem
             string npcName = "Adversary"; 
             AIPlayer.Name = npcName;
             Thread.Sleep(333);
+            Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("SIMULATING DICE ROLLS FOR " + AIPlayer.Name + " STATS...");
 
             // SETS AI STATS
@@ -241,6 +266,7 @@ namespace CombatSystem
             Thread.Sleep(333);
             // DISPLAYS AI STATS
             showStats(AIPlayer.Name, AIPlayer.HP, AIPlayer.MP, AIPlayer.AP, AIPlayer.ATK, AIPlayer.DEF, AIPlayer.CON, AIPlayer.STR, AIPlayer.DEX, AIPlayer.INTEL, AIPlayer.WIS);
+            Console.ResetColor();
 
             // INITIALIZES WEAPONS
             Fists Fists = new Fists();
@@ -257,7 +283,9 @@ namespace CombatSystem
             // WEAPON CHOICE DIALOG
             showWeapons();
             Thread.Sleep(333);
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.Write("CHOOSE YOUR WEAPON: ");
+            Console.ResetColor();
             choice = Console.ReadLine();
             int.TryParse(choice, out choice2);
 
@@ -270,7 +298,9 @@ namespace CombatSystem
                     Console.WriteLine("");
                     showWeapons();
                     Thread.Sleep(333);
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.Write("CHOOSE YOUR WEAPON: ");
+                    Console.ResetColor();
                     choice = Console.ReadLine();
                     int.TryParse(choice, out choice2);
                 }
@@ -303,13 +333,18 @@ namespace CombatSystem
                     Player1.WeaponDMG = Warhammer.Dmg;
                 }
             }
+
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.WriteLine("YOU'VE EQUIPPED YOUR " + Player1.WeaponName);
+            Console.ResetColor();
             Console.WriteLine("");
             Thread.Sleep(333);
 
             // -------------------------------- [ COMBAT START DIALOG ] -----------------------------------------------------------------------------------------
 
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.Write("START COMBAT? ENTER YES (Y) OR NO (N): ");
+            Console.ResetColor();
             choice = Console.ReadLine();
             Console.WriteLine(" ");
             foreach (char c in choice)
@@ -322,7 +357,9 @@ namespace CombatSystem
                 {
                     if (choice == "n")
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.Write("THIS WILL EXIT THE PROGRAM. START COMBAT? ENTER YES (Y) OR NO (N): ");
+                        Console.ResetColor();
                         choice = Console.ReadLine();
                         if (choice != "y")
                         {
@@ -334,7 +371,9 @@ namespace CombatSystem
                     {
                         Console.WriteLine(invalid);
                         Console.WriteLine(" ");
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                         Console.Write("START COMBAT? ENTER YES (Y) OR NO (N): ");
+                        Console.ResetColor();
                         choice = Console.ReadLine();
                     }
 
@@ -342,22 +381,28 @@ namespace CombatSystem
             }
             else if (choice == "y")
             {
-                while (choice == "y")
+                isRunning = true;
+
+                while (isRunning)
                 {
                     // INITIALIZES BOTH FIGHTERS AS ALIVE
                     Player1.Alive = true;
                     AIPlayer.Alive = true;
                     Thread.Sleep(333);
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
                     Console.WriteLine("< < < BEGINNING COMBAT SEQUENCE > > >");
                     Console.WriteLine(" ");
                     Thread.Sleep(333);
                     Console.WriteLine("ROLLING INITIATIVE...");
                     Player1.Init = diceRoll(1, 20);
                     Thread.Sleep(333);
+                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine("--- " + Player1.Name + " rolled " + Player1.Init);
                     AIPlayer.Init = diceRoll(1, 20);
                     Thread.Sleep(333);
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine("--- " + AIPlayer.Name + " rolled " + AIPlayer.Init);
+                    Console.ResetColor();
                     Console.WriteLine(" ");
                     Thread.Sleep(500);
 
@@ -365,13 +410,17 @@ namespace CombatSystem
                     if (Player1.Init == AIPlayer.Init)
                     {
                         Thread.Sleep(333);
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                         Console.WriteLine("INITIATIVE ROLL DRAW! RE-ROLLING INITIATIVE... ");
+                        Console.ResetColor();
                         Console.WriteLine(" ");
                         Player1.Init = diceRoll(1, 20);
                         Thread.Sleep(333);
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.WriteLine("--- " + Player1.Name + " rolled " + Player1.Init);
                         AIPlayer.Init = diceRoll(1, 20);
                         Thread.Sleep(333);
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine("--- " + AIPlayer.Name + " rolled " + AIPlayer.Init);
                         Console.WriteLine(" ");
                         Thread.Sleep(333);
@@ -388,6 +437,7 @@ namespace CombatSystem
                         origPlayerDef = Player1.DEF; // HOLDS PLAYER ORIGINAL DEF VALUE
                         origAIDef = AIPlayer.DEF; // HOLDS AI ORIGINAL DEF VALUE
 
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
                         Console.WriteLine(Player1.Name + " GOES FIRST... ");
                         Thread.Sleep(500);
                         Console.WriteLine(" ");
@@ -425,10 +475,13 @@ namespace CombatSystem
                             Thread.Sleep(333);
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                            Console.ResetColor();
                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                             choice = choice.Trim(); // TRIMS WHITE SPACE
                             Console.WriteLine(" ");
@@ -436,6 +489,8 @@ namespace CombatSystem
                             {
                                 char.ToLower(c);
                             }
+
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             while (Player1.AP > 0)
                             {
                                 if (choice != "e")
@@ -446,8 +501,10 @@ namespace CombatSystem
                                         if (atkCount < 1)
                                         {
                                             // HIT ROLL
+                                            Console.ForegroundColor = ConsoleColor.DarkGray;
                                             Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
                                             hitRoll = rollHit();
+                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                                             Console.WriteLine("--- " + Player1.Name + " ROLLED " + hitRoll);
                                             Thread.Sleep(333);
 
@@ -466,6 +523,7 @@ namespace CombatSystem
                                             }
                                             else
                                             {
+                                                Console.ForegroundColor = ConsoleColor.DarkGray;
                                                 Console.WriteLine("--- " + Player1.Name + "'s ATTACK MISSES!");
                                                 Console.WriteLine(" ");
                                                 Thread.Sleep(333);
@@ -478,6 +536,7 @@ namespace CombatSystem
                                         else
                                         {
                                             Console.WriteLine("YOU CAN ONLY ATTACK ONCE PER ROUND!");
+                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                                             Console.WriteLine(" ");
                                             Thread.Sleep(333);
                                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
@@ -486,6 +545,7 @@ namespace CombatSystem
 
                                             Console.WriteLine(" ");
                                             Thread.Sleep(333);
+                                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
                                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                                             choice = choice.Trim(); // TRIMS WHITE SPACE
@@ -499,17 +559,25 @@ namespace CombatSystem
                                     // IF PLAYER CHOOSES TO DEFEND
                                     else if (choice == "d")
                                     {
-                                        Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
-                                        Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
-                                        Thread.Sleep(333);
-                                        Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
-                                        Thread.Sleep(333);
-                                        Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
-                                        Thread.Sleep(333);
-                                        Console.WriteLine(" ");
-                                        Player1.AP = Player1.AP - defCost;
-                                        choice = "e";
-                                        break;
+                                        if (Player1.AP >= defCost)
+                                        {
+                                            Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
+                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
+                                            Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
+                                            Thread.Sleep(333);
+                                            Console.WriteLine("--- DEFENSE INCREASES BY: " + (Player1.DEF - origPlayerDef));
+                                            Thread.Sleep(333);
+                                            Console.WriteLine("--- " + Player1.Name + "'s DEFENSE: " + Player1.DEF);
+                                            Thread.Sleep(333);
+                                            Console.WriteLine(" ");
+                                            Player1.AP = Player1.AP - defCost;
+                                            choice = "e";
+                                            break;
+                                        }
+                                        else
+                                        {
+                                            Console.WriteLine($"{Player1.Name}'S ARMS QUIVER AS THEY ATTEMPT, IN VAIN, TO LIFT THEIR SHIELD.");
+                                        }
                                     }
                                     // IF PLAYER CHOOSES TO HEAL
                                     else if (choice == "h")
@@ -1117,6 +1185,11 @@ namespace CombatSystem
                     {
                         char.ToLower(c);
                     }
+
+                    if (choice == "y")
+                    {
+                        break;
+                    }
                     if (choice == "n")
                     {
                         Environment.Exit(0);
@@ -1125,6 +1198,7 @@ namespace CombatSystem
             }
 
             // THERE BE METHODS BELOW THIS LINE!
+
 
             static int getStats(int rolls, int sides)
             {
@@ -1145,31 +1219,74 @@ namespace CombatSystem
                 Console.WriteLine(target + " " + declarator + ": " + stat);
             }
 
-            static void showLogo()
+            static void showLogo(TimeSpan duration)
             {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
                 string logo =
-                "                                     ____                               \n" +
-                "|``````.         |         |        |                   |               \n" +
-                "|       |        |         |        |______             |               \n" +
-                "|       |        |         |        |                   |               \n" +
-                "|......'         `._______.'        |___________        |_______        \n" +
-                "                                                                        \n" +
-                "                             (C) Blaqkstar 2022. All Rights Reserved\n\n";
+                    "                                     ____                               \n" +
+                    "|``````.         |         |        |                   |               \n" +
+                    "|       |        |         |        |______             |               \n" +
+                    "|       |        |         |        |                   |               \n" +
+                    "|......'         `._______.'        |___________        |_______        \n" +
+                    "                                                                        \n";
 
-                Console.WriteLine(logo);
+                string[] lines = logo.Split('\n');
+                int maxLength = GetMaxLength(lines);
+
+                // calculates the sleep interval for each character reveal
+                int totalCharacters = GetTotalCharacters(lines);
+                int sleepInterval = (int)(duration.TotalMilliseconds / totalCharacters);
+
+                foreach (string line in lines)
+                {
+                    for (int i = 0; i < line.Length; i++)
+                    {
+                        Console.Write(line[i]);
+                        // Sleep every 10 characters
+                        if (i % 10 == 0)
+                        {
+                            Thread.Sleep(sleepInterval);
+                        }
+                    }
+                    Console.WriteLine();
+                }
+
+                Console.ResetColor();
+            }
+
+            static int GetMaxLength(string[] lines)
+            {
+                int maxLength = 0;
+                foreach (string line in lines)
+                {
+                    if (line.Length > maxLength)
+                    {
+                        maxLength = line.Length;
+                    }
+                }
+                return maxLength;
+            }
+
+            static int GetTotalCharacters(string[] lines)
+            {
+                int totalCharacters = 0;
+                foreach (string line in lines)
+                {
+                    totalCharacters += line.Length;
+                }
+                return totalCharacters;
             }
 
             static void showWelcomeMsg()
             {
                 string msg =
-                "Hello there! Thanks for checking out DUEL! This is a simple project that I am using to learn more about coding while\n" +
-                "on winter break from my software engineering degree. Updates and bug fixes will go out as I can get them done,\n" +
-                "but since the DUEL dev team is just me, I wouldn't expect them to be all that regular. I hope you enjoy the game!\n\n" +
-                "o7\n\n" +
-                "Regards,\n" +
-                "// Blaqkstar //\n\n\n";
-
-                Console.WriteLine(msg);
+                "WELCOME, CHAMPION. MAKE YOUR PREPARATIONS...";
+                foreach (char c in msg)
+                {
+                    Console.Write(c);
+                    Thread.Sleep(100); // Adjust this value to control the speed of the reveal
+                }
+                Console.WriteLine();
             }
 
             static void showStats(string targetName, int hp, int mp, int ap, int atk, int def, int con, int str, int dex, int intel, int wis)
@@ -1209,8 +1326,9 @@ namespace CombatSystem
                 int maxDmg = 0;
                 int atkCost = 0;
 
-
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine("FISTS (1)\tKNIFE (2)\tSWORD (3)\tAXE (4)\t\tWARHAMMER (5)");
+                Console.ResetColor();
                 Console.WriteLine("---------------------------------------------------------------------------");
                 Console.WriteLine("MIN DMG: " + Fists.MinDmg + "\tMIN DMG: " + Knife.MinDmg + "\tMIN DMG: " + Sword.MinDmg + "\tMIN DMG: " + Axe.MinDmg + "\tMIN DMG: " + Warhammer.MinDmg);
                 Console.WriteLine("MAX DMG: " + Fists.MaxDmg + "\tMAX DMG: " + Knife.MaxDmg + "\tMAX DMG: " + Sword.MaxDmg + "\tMAX DMG: " + Axe.MaxDmg + "\tMAX DMG: " + Warhammer.MaxDmg);
@@ -1534,7 +1652,7 @@ namespace CombatSystem
                             atkWeight++;
                         }
                         // IF AI CANNOT ATTACK
-                        else if (aiATKCount > 0)
+                        else
                         {
                             defWeight++;
                         }
