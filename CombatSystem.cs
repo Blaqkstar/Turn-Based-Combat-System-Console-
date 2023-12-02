@@ -547,6 +547,7 @@ namespace CombatSystem
                                             Thread.Sleep(333);
                                             Console.ForegroundColor = ConsoleColor.DarkYellow;
                                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                                            Console.ResetColor();
                                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                                             choice = choice.Trim(); // TRIMS WHITE SPACE
                                             Console.WriteLine(" ");
@@ -603,12 +604,16 @@ namespace CombatSystem
                                             }
                                             else
                                             {
+                                                Console.ForegroundColor = ConsoleColor.DarkGray;
                                                 Console.WriteLine("YOU CAN ONLY HEAL ONCE PER ROUND!");
+                                                Console.ResetColor();
                                             }
                                         }
                                         else
                                         {
+                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                                             Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
+                                            Console.ResetColor();
                                             Player1.AP = Player1.AP - (healCost / 2);
                                         }
                                     }
@@ -626,16 +631,21 @@ namespace CombatSystem
                                     }
 
                                     // DISPLAYS PLAYER AND AI REMAINING HP
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Console.WriteLine("----------");
+                                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                                     Thread.Sleep(333);
                                     showStat(Player1.Name, "HP", Player1.HP);
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Thread.Sleep(333);
                                     Console.WriteLine("----------");
                                     Console.WriteLine(" ");
 
                                     if (Player1.AP > 0)
                                     {
+                                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                                         Console.Write("YOU HAVE " + Player1.AP + " ACTION POINTS REMAINING. ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? ");
+                                        Console.ResetColor();
                                         choice = Console.ReadLine();
                                         Console.WriteLine(" ");
                                         choice = choice.Trim();
@@ -650,7 +660,10 @@ namespace CombatSystem
                                     break;
                                 }
                             }
+
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine(Player1.Name + "'s TURN ENDS...");
+                            Console.ResetColor();
                             Console.WriteLine(" ");
                             Thread.Sleep(333);
 
@@ -679,6 +692,7 @@ namespace CombatSystem
 
                             AIPlayer.DEF = origAIDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE AI HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
 
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine("---------- " + AIPlayer.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
                             Thread.Sleep(333);
@@ -773,19 +787,24 @@ namespace CombatSystem
                                 {
                                     break;
                                 }
-
+                                Console.ResetColor();
                                 
                             }
                             // DISPLAYS PLAYER AND AI REMAINING HP
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
                             Console.WriteLine("----------");
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             showStat(Player1.Name, "HP", Player1.HP);
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
                             Thread.Sleep(333);
                             Console.WriteLine("----------");
                             Console.WriteLine(" ");
                         }
                         Thread.Sleep(333);
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
+                        Console.ResetColor();
                         Console.WriteLine(" ");
 
                         // SHOULD TRIGGER AFTER EITHER AI OR PLAYER HP REACHES 0
@@ -794,12 +813,16 @@ namespace CombatSystem
                         if (AIPlayer.Alive == false)
                         {
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine("Congratulations, " + Player1.Name + "! You win!");
+                            Console.ResetColor();
                         }
                         else
                         {
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine(AIPlayer.Name + " wins!");
+                            Console.ResetColor();
                         }
                     }
                     // -------------------------------- [ IF AI WINS INIT ROLL ] -----------------------------------------------------------------------------------------
@@ -813,6 +836,7 @@ namespace CombatSystem
                         origPlayerDef = Player1.DEF; // HOLDS PLAYER ORIGINAL DEF VALUE
                         origAIDef = AIPlayer.DEF; // HOLDS AI ORIGINAL DEF VALUE
 
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine(AIPlayer.Name + " GOES FIRST... ");
                         Console.WriteLine(" ");
                         Thread.Sleep(500);
@@ -940,18 +964,22 @@ namespace CombatSystem
                                 {
                                     break;
                                 }
-
-
+                                Console.ResetColor();
                             }
                             // DISPLAYS PLAYER AND AI REMAINING HP
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
                             Console.WriteLine("----------");
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             showStat(Player1.Name, "HP", Player1.HP);
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkGray;
                             Console.WriteLine("----------");
                             Console.WriteLine(" ");
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine(AIPlayer.Name + "'s TURN ENDS...");
+                            Console.ResetColor();
                             Console.WriteLine(" ");
                             Thread.Sleep(500);
 
@@ -978,6 +1006,7 @@ namespace CombatSystem
                             Player1.DEF = origPlayerDef; // RESETS DEF AT THE BEGINNING OF EACH TURN IN CASE PLAYER HAS PREVIOUSLY DEFENDED. THIS SHOULD ALSO PREVENT TURTLING.
                             AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS AI STATUS AT BEGINNING OF EACH TURN
 
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine("---------- " + Player1.Name + "'s TURN ----------");
                             Console.WriteLine(" ");
                             Thread.Sleep(333);
@@ -994,10 +1023,13 @@ namespace CombatSystem
                             Thread.Sleep(333);
                             Console.WriteLine(Player1.Name + " HP: " + Player1.HP + "  |  " + Player1.Name + " AP: " + Player1.AP);
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine(AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
                             Console.WriteLine(" ");
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                            Console.ResetColor();
                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                             choice = choice.Trim(); // TRIMS WHITE SPACE
                             Console.WriteLine(" ");
@@ -1016,6 +1048,7 @@ namespace CombatSystem
                                         {
                                             // HIT ROLL
                                             Thread.Sleep(333);
+                                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                                             Console.WriteLine(Player1.Name + " ROLLS FOR HIT...");
                                             hitRoll = rollHit();
                                             Thread.Sleep(333);
@@ -1030,7 +1063,9 @@ namespace CombatSystem
                                                 Console.WriteLine("--- " + Player1.Name + " HITS " + AIPlayer.Name + " FOR " + damage + " DAMAGE!");
                                                 AIPlayer.Status = getStatus(AIPlayer.HP, AIPlayer.MaxHP); // CHECKS TARGET STATUS
                                                 Thread.Sleep(333);
+                                                Console.ForegroundColor = ConsoleColor.DarkRed;
                                                 Console.WriteLine("--- " + AIPlayer.Name + AIPlayer.Status); // STATUS OUTPUT
+                                                Console.ForegroundColor = ConsoleColor.DarkGreen;
                                                 Console.WriteLine(" ");
                                                 Thread.Sleep(333);
                                             }
@@ -1056,7 +1091,9 @@ namespace CombatSystem
                                             Console.WriteLine("REMAINING POTIONS: " + Player1.Pots);
                                             Console.WriteLine(" ");
                                             Thread.Sleep(333);
+                                            Console.ForegroundColor = ConsoleColor.DarkYellow;
                                             Console.Write("ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? "); // USER INPUT PROMPT
+                                            Console.ResetColor();
                                             choice = Console.ReadLine(); // ACCEPTS USER INPUT
                                             choice = choice.Trim(); // TRIMS WHITE SPACE
                                             Console.WriteLine(" ");
@@ -1069,6 +1106,7 @@ namespace CombatSystem
                                     // IF PLAYER CHOOSES TO DEFEND
                                     else if (choice == "d")
                                     {
+                                        Console.ForegroundColor = ConsoleColor.DarkGreen;
                                         Player1.DEF = Player1.DEF + useDefend(Player1.DEF);
                                         Thread.Sleep(333);
                                         Console.WriteLine("--- " + Player1.Name + " RAISES THEIR SHIELD, PREPARING FOR " + AIPlayer.Name + "'s NEXT ATTACK!");
@@ -1097,6 +1135,7 @@ namespace CombatSystem
                                                 }
                                                 Player1.Pots = Player1.Pots - 1;
                                                 Thread.Sleep(333);
+                                                Console.ForegroundColor = ConsoleColor.DarkGreen;
                                                 Console.WriteLine("--- " + Player1.Name + " DRINKS A POTION FROM THEIR BELT, HEALING " + healAmount + " HP!");
                                                 Thread.Sleep(333);
                                                 Console.WriteLine("--- REMAINING POTIONS: " + Player1.Pots);
@@ -1108,13 +1147,16 @@ namespace CombatSystem
                                             else
                                             {
                                                 Thread.Sleep(333);
+                                                Console.ForegroundColor = ConsoleColor.DarkGray;
                                                 Console.WriteLine("YOU CAN ONLY HEAL ONCE PER ROUND!");
+                                                Console.ResetColor();
                                                 Thread.Sleep(333);
                                             }
                                         }
                                         else
                                         {
                                             Thread.Sleep(333);
+                                            Console.BackgroundColor = ConsoleColor.DarkGreen;
                                             Console.WriteLine(Player1.Name + " REACHED FOR A POTION, BUT THEIR BELT WAS EMPTY!");
                                             Player1.AP = Player1.AP - (healCost / 2);
                                             Thread.Sleep(333);
@@ -1134,17 +1176,22 @@ namespace CombatSystem
                                     }
 
                                     // DISPLAYS PLAYER AND AI REMAINING HP
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Console.WriteLine("----------");
                                     Thread.Sleep(333);
+                                    Console.ForegroundColor = ConsoleColor.DarkGreen;
                                     showStat(Player1.Name, "HP", Player1.HP);
                                     Thread.Sleep(333);
+                                    Console.ForegroundColor = ConsoleColor.DarkGray;
                                     Console.WriteLine("----------");
                                     Console.WriteLine(" ");
 
                                     if (Player1.AP > 0)
                                     {
                                         Thread.Sleep(333);
+                                        Console.ForegroundColor = ConsoleColor.DarkYellow;
                                         Console.Write("YOU HAVE " + Player1.AP + " ACTION POINTS REMAINING. ATTACK (A), DEFEND (D), HEAL (H), OR END TURN (E)? ");
+                                        Console.ResetColor();
                                         choice = Console.ReadLine();
                                         Console.WriteLine(" ");
                                         choice = choice.Trim();
@@ -1160,25 +1207,33 @@ namespace CombatSystem
                                 }
                             }
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine(Player1.Name + "'s TURN ENDS...");
+                            Console.ResetColor();
                             Console.WriteLine(" ");
                             Thread.Sleep(500);
                         }
                         if (Player1.Alive == true && AIPlayer.Alive == false)
                         {
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkGreen;
                             Console.WriteLine("Congratulations, " + Player1.Name + "! You win!");
+                            Console.ResetColor();
                             Thread.Sleep(333);
                         }
                         else if (Player1.Alive == false && AIPlayer.Alive == true)
                         {
                             Thread.Sleep(333);
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
                             Console.WriteLine("YOU LOSE!");
+                            Console.ResetColor();
                             Thread.Sleep(333);
                         }
                     }
                     Thread.Sleep(333);
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.Write("PLAY AGAIN? YES (Y) OR NO (N)? ");
+                    Console.ResetColor();
                     choice = Console.ReadLine();
                     choice = choice.Trim();
                     foreach (char c in choice)
